@@ -16,7 +16,7 @@
     <div id="page">
         <main>
 
-            <div id="nav-bar">
+            <div id="nav-bar" class="m-2">
                 <nav class="navbar navbar-expand-lg navbar-light">
 
                     <a class="navbar-brand" href="./index.html">Pedro E. Perez</a>
@@ -25,9 +25,9 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                      <ul class="navbar-nav">
-                        <li class="nav-item active">
-                          <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                      <ul class="navbar-nav shadow">
+                        <li class="nav-item">
+                          <a class="nav-link" href="./index.html">Home</a>
                         </li>
                         <li class="nav-item">
                           <a class="nav-link" href="#">Game Development</a>
@@ -49,9 +49,14 @@
             <div id="main-content">
                 <h2 class="display-3">Professional portfolio</h2>
                 <br>
-                <p class="lead text-center"> Hello and welcome to my professional portfolio. Here, you'll see some of my work and shenanigans.</p>
+                <p class="lead text-center rounded-pill border border-5 bg-primary"> Hello and welcome to my professional portfolio. Here, you'll see some of my work and shenanigans.</p>
                 <img class="images" src="./Images/god-of-war.png">
-                <br>    
+                
+                <div class="music-player mx-auto p-1 shadow-sm" style="width: 300px;">
+                    <audio controls>
+                        <source src="/Audio/LostWoods.mp3" type="audio/mp3">
+                    </audio>
+                </div>
             </div>
         
         </main> 
