@@ -1,13 +1,20 @@
 body
 {
-    background-color: aquamarine;
+    background-color: floralwhite;
 
 }
 
 #main-content
 {
 
-    background-color: pink;
+    background-color: black;
+    color: rgb(213, 252, 252);
+
+}
+
+#nav-bar
+{
+    color:white;
 
 }
 
