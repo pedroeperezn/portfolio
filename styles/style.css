@@ -1,0 +1,27 @@
+body
+{
+    background-color: aquamarine;
+
+}
+
+#main-content
+{
+
+    background-color: pink;
+
+}
+
+.images
+{
+    padding-top: 20px;
+    width: 25%;
+    height: 25%; 
+}
+
+.youtube-video-embed
+{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: 200px;
+    width: 350px;
+}
