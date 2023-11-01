@@ -14,61 +14,69 @@
 <body>
 
     <div id="page">
-        <main>
-<!--
-            <div id="nav-bar" class="m-2">
-                <nav class="navbar navbar-expand-lg navbar-light">
+        
 
-                    <a class="navbar-brand" href="./index.html">Pedro E. Perez</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                      <span class="navbar-toggler-icon"></span>
-                    </button>
+      <nav class="navbar">
+        <div class="container-xxl">
 
-                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                      <ul class="navbar-nav shadow">
-                        <li class="nav-item">
-                          <a class="nav-link" href="./index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Game Development</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Software Development</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Education</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./passions.html">My passions</a>
-                        </li>
-                      </ul>
-                    </div>
-                </nav>
-            </div>
--->
+          <a href="#intro" class="navbar-brand">
+            <span class="fw-bold text-secondary">My intro</span>
+          </a>
 
-            <section id="intro">
+          <!--Toggle button for mobile navigation-->
+          <button class="navbar-togler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
+          aria-label="Toggle Navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
 
-              <div class="container-lg">
-                <div class="row justify-content-center">
-                  <div class="col-md-7 text-center text-md-start">
+          <!--LINKS IN THE NAVBAR -->
+          <ul class="collapse navbar-collapse justify-content-end align-center"
+          id="navbar-nav">
+            <li class="nav-item">
+              <a href="#about" class="nav-link"> About Me </a>
+            </li>
+            <li class="nav-item">
+              <a href="#education" class="nav-link"> My Education </a>
+            </li>
+            <li class="nav-item">
+              <a href="#experience" class="nav-link"> My Experience </a>
+            </li>
+            <li class="nav-item">
+              <a href="#passions" class="nav-link"> My Passions </a>
+            </li>
 
-                    <h1>
-                      <div class="display-2">Pedro</div>
-                      <div class="display-5 text-muted"> Software Developer </div>
-                    </h1>
+          </ul>
 
-                    <p class="lead my-4 text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    <a hfref="#pricing" class="btn btn-secondary btn-lg">Click Here</a>
-                  </div>
 
-                  <div class="col-md-5 text-center d-none d-md-block">
-                    <img class="img-fluid" src="./Images/PedroEA.jpg" alt="Pedro at EA">
-                  </div>
-                </div>
+        </div>
+
+      </nav>
+
+      <main>
+
+        <section id="intro">
+
+          <div class="container-lg">
+            <div class="row justify-content-center">
+              <div class="col-md-7 text-center text-md-start">
+
+                <h1>
+                  <div class="display-2">Pedro</div>
+                  <div class="display-5 text-muted"> Software Developer </div>
+                </h1>
+
+                <p class="lead my-4 text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <a hfref="#pricing" class="btn btn-secondary btn-lg">Click Here</a>
               </div>
 
-            </section>
+              <div class="col-md-5 text-center d-none d-md-block">
+                <img class="img-fluid" src="./Images/PedroEA.jpg" alt="Pedro at EA">
+              </div>
+            </div>
+          </div>
+
+        </section>
 <!--
             <div id="main-content">
                 <h2 class="display-3">Professional portfolio</h2>
