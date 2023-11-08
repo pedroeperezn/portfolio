@@ -37,13 +37,13 @@
               <a href="#about" class="nav-link"> About Me </a>
             </li>
             <li class="nav-item">
-              <a href="#education" class="nav-link"> My Education </a>
+              <a href="#experience" class="nav-link"> Experience </a>
             </li>
             <li class="nav-item">
-              <a href="#experience" class="nav-link"> My Experience </a>
+              <a href="#education" class="nav-link"> Education </a>
             </li>
             <li class="nav-item">
-              <a href="#passions" class="nav-link"> My Passions </a>
+              <a href="#passions" class="nav-link"> Passions </a>
             </li>
 
           </ul>
@@ -92,6 +92,83 @@
 <!--Close section-->
         </section>
 
+<!--=============================================================================================-->
+<section id="experience" class="bg-dark">
+  <div class="container-lg">
+    <div class="row">
+      <h2 class="text-light text-center my-5">Projects</h2>
+      <div class="col-6 mt-5">
+        <h3 class="text-light">Everything Must Go!</h3>
+        <p class="text-light">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam hic nihil cumque. Saepe, repellat id nihil in hic deleniti, vero harum eius quasi sed incidunt fugiat facere earum culpa, rerum dignissimos ipsum. Quam, atque. Temporibus aspernatur nesciunt ea nostrum nulla cupiditate provident sequi vero est architecto. Quaerat reiciendis dolorem voluptatem.</p>
+      </div>
+      <div class="col-md-6 d-mid-block text-center pb-5">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/QuersdGu7Pw?si=6J5Ih3xPc2WLXNDO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!--
+    <div class="row">
+      <div class="col-6">
+        <h3 class="text-light text-center">Mechanics</h3>
+      </div>
+      <div class="col-6">
+        <h3 class="text-light text-center">Technology</h3>
+        <p class="text-light">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi dolorum pariatur, vel nesciunt facilis error, eveniet porro impedit voluptates beatae excepturi ex iste. Iusto voluptatum, eveniet recusandae ducimus repudiandae officia quas dolor ea quae eum natus optio animi omnis laborum?</p>
+      </div>
+    </div>
+-->
+    <!--====================================Accordion test======================================-->
+    <div class="row g-5 py-5 justify-content-around">
+      <div class="col-6">
+        <div class="accordion" id="EMGInfo">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-1">
+              <button class="accordion-button fw-bold" type="button" 
+              data-bs-toggle="collapse" data-bs-target="#mechanics" 
+              aria-expanded="true" aria-controls="mechanics">
+              Mechanics
+              </button>
+            </h2>
+            <div id="mechanics" class="accordion-collapse 
+            collapse hide" aria-labelledby="heading-1" data-bs-parent="#mechanics">
+              <div class="accordion-body">
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia sed voluptatem illum. Fugiat, possimus voluptate. Temporibus, ipsam optio veniam dolorum alias iure quae sequi molestias, doloremque voluptatum amet fuga commodi?</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus esse dolorem quae assumenda nam sunt ab eveniet sit earum minus!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-6">
+        <div class="accordion" id="EMGInfo">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-2">
+              <button class="accordion-button fw-bold" type="button" 
+              data-bs-toggle="collapse" data-bs-target="#tech" 
+              aria-expanded="true" aria-controls="tech">
+              Tech
+              </button>
+            </h2>
+            <div id="tech" class="accordion-collapse 
+            collapse hide" aria-labelledby="heading-2" data-bs-parent="#tech">
+              <div class="accordion-body">
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia sed voluptatem illum. Fugiat, possimus voluptate. Temporibus, ipsam optio veniam dolorum alias iure quae sequi molestias, doloremque voluptatum amet fuga commodi?</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus esse dolorem quae assumenda nam sunt ab eveniet sit earum minus!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+    <!--====================================Accordion test======================================-->
+
+  </div>
+</section>
+
+
+<!--=============================================================================================-->
+
 <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SECTION TWO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 
 <section id="education" class="bg-light mt-5">
@@ -114,8 +191,35 @@
           </div>
         </div>
       </div>
-    </div>
 
+      <div class="col-9 col-lg-4">
+        <div class="card border-primary border-2">
+          <div class="card-header text-center text-primary">Crazy stuff</div>
+          <div class="card-body text-center py-5">
+            <h4 class="card-title">Bachelor's Degree in Audio Engineering</h4>
+            <p class="lead card-subtitle">Monterrey Institute of Technology and Higher Education</p>
+            <p class="display-4 my-4 text-primary fw-bold">Cum Laude</p>
+            <p class="card-text mx-5 text-muted d-none d-lg-block">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, ad.</p>
+            <a href="#" class="btn btn-outline-primary btn-lg mt-3">Hire Me!</a>
+          </div>
+        </div>
+      </div>
+
+
+        <div class="col-8 col-lg-3 col-xl-3">
+          <div class="card border-0">
+            <div class="card-body text-center py-4">
+              <h4 class="card-title">Bachelor's Degree in Audio Engineering</h4>
+              <p class="lead card-subtitle">Monterrey Institute of Technology and Higher Education</p>
+              <p class="display-5 my-4 text-primary fw-bold">Cum Laude</p>
+              <p class="card-text mx-5 text-muted d-none d-lg-block">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum, ad.</p>
+              <a href="#" class="btn btn-outline-primary btn-lg mt-3">Hire Me!</a>
+            </div>
+          </div>
+        </div>
+
+
+    </div>
   </div>
 
 </section>
