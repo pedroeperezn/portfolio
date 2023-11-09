@@ -50,3 +50,29 @@ body
     }
   }
 
+  .gallery {
+    display: flex;
+    align-items: center;
+  }
+  
+  .gallery-content {
+    display: flex;
+    overflow: hidden;
+  }
+  
+  .content {
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  
+  .gallery-arrows button {
+    margin: 10px;
+    cursor: pointer;
+  }
+  
+  .gallery-arrows button:hover {
+    background-color: #ccc;
+  }
