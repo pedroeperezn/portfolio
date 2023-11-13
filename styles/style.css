@@ -76,3 +76,8 @@ body
   .gallery-arrows button:hover {
     background-color: #ccc;
   }
+
+  .pre-scrollable
+  {
+    max-height: 350px;
+  }
