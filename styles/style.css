@@ -81,3 +81,20 @@ body
   {
     max-height: 350px;
   }
+
+  .card-img-top
+  {
+    width: 60%;
+    margin: auto;
+    padding: 10px;
+  }
+
+  #wimmThumb
+  {
+    width: 48%;
+  }
+
+  .projectCard
+  {
+    height: 550px;
+  }
