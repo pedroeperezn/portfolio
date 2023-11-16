@@ -67,10 +67,6 @@ body
   width: 48%;
 }
 
-.projectCard
-{
-  height: 550px;
-}
 
 @media (max-width: 768px) 
 {
