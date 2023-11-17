@@ -43,7 +43,7 @@ body
 
 .video-container iframe 
 {
-    position: absolute;
+    
     top: 0;
     left: 0;
     width: 100%;
@@ -74,5 +74,16 @@ body
   {
     display: none; /* Hide the video on small screens */
   }
+}
+
+.project-item {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.project-item.active {
+  display: block;
+  opacity: 1;
 }
 

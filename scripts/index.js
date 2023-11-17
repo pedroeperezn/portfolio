@@ -27,3 +27,34 @@
 //tooltips.forEach(t=> {
 //    new bootstrap.Tooltip(t)
 //})
+
+document.addEventListener("DOMContentLoaded", function () {
+    const projectItems = document.querySelectorAll('.project-item');
+    let currentIndex = 0;
+  
+    function showProject(index) {
+      projectItems.forEach((item, i) => {
+        if (i === index) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+  
+    function nextProject() {
+      currentIndex = (currentIndex + 1) % projectItems.length;
+      showProject(currentIndex);
+    }
+  
+    function prevProject() {
+      currentIndex = (currentIndex - 1 + projectItems.length) % projectItems.length;
+      showProject(currentIndex);
+    }
+  
+    document.getElementById('nextBtn').addEventListener('click', nextProject);
+    document.getElementById('prevBtn').addEventListener('click', prevProject);
+    
+    // Show the initial project (optional)
+    showProject(currentIndex);
+  });
