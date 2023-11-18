@@ -119,50 +119,79 @@
 
 <!--==================================Experience===========================================================-->
 
-<section id="experience" class="bg-dark">
-  
-  <div class="container-lg">
-    <div class="row d-flex flex-row">
-      <h1 class="text-light text-center mt-5 display-3">Projects</h1>
-    </div>
-    <div class="row d-flex flex-row">
-      <!--==================================================================================================================-->
-      <div class="col-6 my-5">
-        <div class="card h-100">
-          <img  class="card-img-top" id="emgThumb" src="./Images/emgLogo.png" width="75%" alt="Card image cap">
-        <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Everything Must Go! | Unreal Engine | C++ | FMOD</h5>
-            <p class="card-text">Everything Must Go! Is an online multiplayer racing game in which each player is a contestant
-              in a shopping game show. Their goal is to collect and checkout as many items as they can before the time runs out. 
-              Players can also mess with their fellow shoppers by ramming into them and use power-ups such as speed-boosts, 
-              infinite cart space, shields, and deploying hazards. 
-            </p>
-            <div class="mt-auto text-center">
-              <a href="./emg.html" class="btn btn-primary">More Details</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--==================================================================================================================-->
-      <div class="col-6 my-5">
-        <div class="card h-100">
-          <img  class="card-img-top" id="wimmThumb" src="./Images/wimmKalimba.png" alt="Card image cap">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Where is my Mind? | Unity | C# | FMOD</h5>
-            <p class="card-text">Where is my Mind? is a single player puzzle game in which you play as an insomniac man who
-              wakes up trapped in an insane asylum which only inhabitants are the mute and disturbed patients. The player
-              needs to figure out how to scape the asylum by solving a series of puzzles with nothing more but the help of a kalimba.
-            </p>
-            <div class="mt-auto text-center">
-              <a href="./wimm.html" class="btn btn-primary">More Details</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
+<section id="landing-project" class="p-5 bg-dark">
+  <div class="row">
+    <h1 class="display-3 text-light text-center pb-3">My Projects</h1>
   </div>
+
+    <div id="gallery-container" class="d-flex justify-content-center embed-responsive embed-responsive-16by9">
+
+        <div id="EMG" class="project-item">
+          <h3 class="display-5 text-light text-center pb-3">Everything Must Go!</h3>
+          <div class="row my-5">
+
+            <div class="col-lg-6 d-none d-md-flex align-items-center justify-content-center pb-5">
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe width="720px" height="480px" class="embed-responsive-item" src="https://www.youtube.com/embed/QuersdGu7Pw?si=6J5Ih3xPc2WLXNDO&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              </div>
+            </div>
+
+            <div class="col-lg-6 p-3">
+              <div class="card h-100">
+                <img  class="card-img-top" id="emgThumb" src="./Images/emgGif.gif" width="75%" alt="Card image cap">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">Everything Must Go! | Unreal Engine | C++ | FMOD</h5>
+                  <p class="card-text">Everything Must Go! Is an online multiplayer racing game in which each player is a contestant
+                  in a shopping game show. Their goal is to collect and checkout as many items as they can before the time runs out. 
+                  Players can also mess with their fellow shoppers by ramming into them and use power-ups such as speed-boosts, 
+                  infinite cart space, shields, and deploying hazards. 
+                  </p>
+                  <div class="mt-auto text-center">
+                    <a href="./emg.html" class="btn btn-primary">More Details</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+
+
+        <div id="WIMM" class="project-item">
+          <h3 class="display-5 text-light text-center pb-3">Where is My Mind?</h3>
+          <div class="row my-5">
+
+            <div class="col-lg-6 d-none d-md-flex align-items-center justify-content-center pb-5">
+              <div class="embed-responsive embed-responsive-16by9">
+                <iframe width="720px" height="480px" class="embed-responsive-item" src="https://www.youtube.com/embed/IA_WRKm6SF8?si=cUVyYW4DyBN1LWvB&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              </div>
+            </div>
+
+            <div class="col-lg-6 p-3">
+              <div class="card h-100">
+                <img  class="card-img-top" id="wimmThumb" src="./Images/wimmKalimba.png" alt="Card image cap">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">Where is my Mind? | Unity | C# | FMOD</h5>
+                  <p class="card-text">Where is my Mind? is a single player puzzle game in which you play as an insomniac man who
+                    wakes up trapped in an insane asylum which only inhabitants are the mute and disturbed patients. The player
+                    needs to figure out how to scape the asylum by solving a series of puzzles with nothing more but the help of a kalimba.
+                  </p>
+                  <div class="mt-auto text-center">
+                    <a href="./wimm.html" class="btn btn-primary">More Details</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+    </div>
+
+  <div class="text-center">
+    <button id="prevBtn" class="btn btn-primary btn-lg p5"><i class="bi bi-arrow-left"></i></button>
+    <button id="nextBtn" class="btn btn-primary btn-lg p5"><i class="bi bi-arrow-right"></i></button>
+  </div>
+
 </section>
 
 <!--=============================================================================================-->
