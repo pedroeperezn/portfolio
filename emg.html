@@ -9,6 +9,14 @@
   <link rel="stylesheet" href="./css/main.min.css">
   <link rel="stylesheet" href="./styles/style.css">
   <link rel="icon" href="./Images/game-controller.png" type="image/x-icon">
+  
+  
+  <!-- Include the Prism stylesheet (choose a theme) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" integrity="sha256-uqLyxUVrM+g1bsO4/8NzoIvsPz5+ZIcqltLXlG9BnQc=" crossorigin="anonymous" />
+
+  <!-- Include the Prism script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js" integrity="sha256-dHDvoeGrv2oX6EEb/gZ9N4E/DXkg5c6zW/cHPtS3ncY=" crossorigin="anonymous"></script>
+
 </head>
   
 <body>
@@ -51,6 +59,10 @@
 
 <!--==========================================Content=======================================================================-->
     <main>
+
+      <!--EXPLAIN WHICH WAS THE PROBLEM AND WHY/HOW TO FIX IT-->
+
+      <!--ALSO TOOLS-->
     <section id="EMG" class="bg-dark">
 
       <div class="container-fluid">
@@ -65,20 +77,24 @@
       <div class="col-12 mt-5">
 
         <p class="lead my-4 text-light text-justify">Everything Must Go! is an online multiplayer racing game in which players
-          are contestants of a game show in which must collect and checkout as many items as they can 
-          before they run out of time. Players can also interfere with their rivals by ramming into them in 
-          order to make them spill items and also can grab and trigger power-ups.
-        </p>
-
-        <p class="lead my-4 text-light text-justify">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, magnam omnis! Dolores numquam est itaque 
-          quia temporibus iure ipsum dolore adipisci soluta vel cum similique, ad asperiores laboriosam excepturi suscipit? 
-          Ab eum quo dolore nesciunt ad laudantium odio provident maiores? At maxime voluptatem repellat nemo eum mollitia quos! Exercitationem, quae.
+          are contestants of a game show in which they must collect and checkout as many items as they can 
+          before they run out of time. Players can also interfere with their rivals by ramming into, make them spill items and also grab and trigger power-ups.
         </p>
 
         <div class="embed-responsive embed-responsive-16by9 text-center mt-5">
           <iframe width="720px" height="480px" class="embed-responsive-item" src="https://www.youtube.com/embed/QuersdGu7Pw?si=T_filksnH0lpefds" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
+
+        <p class="lead my-4 text-light text-justify">
+          <b class="display-6">The Challenge:</b>
+          <br>
+          <br>
+          For this game, I programmed network multiplayer mechanics and implemented audio. This meant using replication and remote procedural calls
+          in most mechanics in order to ensure that the most relevant information was correctly shared between server and clients. The mechanics with which I collaborated for the project
+          were mainly related with item implementation and spawning, their collection and storage for the player, scoring, collecting and using modifiers/power-ups, audio implementation, 
+          UI programming and debug tools implementation using ImGUI. 
+        </p>
+
       </div>
 
     </div>
@@ -96,7 +112,7 @@
     <button class="accordion-button fw-bold collapsed" type="button" 
     data-bs-toggle="collapse" data-bs-target="#mechanics" 
     aria-expanded="true" aria-controls="mechanics"> <!-- TARGET = the id of the section that is going to toggle-->
-    Inventory System
+    Shopping items | Player Inventory | Item Scoring
     </button>
   </h2>
   <!--Content of the accordion, declaring the id that we previously assigned-->
@@ -106,17 +122,35 @@
       
   <div class="list-group">
       <div class="list-group-item py-3">
-        <h5 class="mb-1">Inventory System</h5>
-        <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-          Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-          Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-          Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+        <h5 class="mb-1">The Idea</h5>
 
-<p>Here is some sample code:</p>
+
+<p>
+  The core game loop of "Everything Must Go!" is based on the idea of players going around the level looking for items, filling their shopping cart with them
+  , and checking them out to score points. This implies that each player has a limited space for items that they can carry at a time, 
+  each item must have a size and a monetary value, and, in order to score, players should carry their items to the checkout stand, which should translate
+  the monetary value of each product into the score and clear them from the cart for the players to collect more items. 
+</p>
+
+<h6 class="my-4">Shopping Items</h6>
+
+<p>
+  Given that items will have size and monetary value, it would be fair for those values to be related, meaning that the bigger items should award
+  more points to the player given that they meant a bigger sacrifice for them to carry around. 
+  We also had the goal of making items easily accessible in editor, modifiable and expandable in order for our team's game designers to be able to
+  easily add and tune the data of each item. In order to achieve this, we decided to use 
+  Unreal Engine's Data Tables:
+</p>
+
+<div class="text-center my-5">
+  <img class="img-fluid" src="./Images/emgDataTables.PNG">
+</div>
+
+<p>Once the items were defined</p>
         
 <!--Sample code here for the mechanic-->
 
-<pre class="pre-scrollable bg-light"><code>
+<pre class="pre-scrollable bg-light language-cpp"><code>
         
 #include &ltiostream&gt
 

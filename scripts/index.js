@@ -58,3 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the initial project (optional)
     showProject(currentIndex);
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    Prism.highlightAll();
+  });
