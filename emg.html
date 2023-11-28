@@ -19,7 +19,7 @@
       <nav class="navbar navbar-expand-md navbar-light">
         <div class="container-xxl">
 
-          <a href="#intro" class="navbar-brand">
+          <a href="./index.html" class="navbar-brand">
             <span class="fw-bold text-secondary">Pedro Enrique Perez</span>
           </a>
 
@@ -52,20 +52,32 @@
 <!--==========================================Content=======================================================================-->
     <main>
     <section id="EMG" class="bg-dark">
+
+      <div class="container-fluid">
+        <div id="emgBanner" class="row banner">
+        </div>
+      </div>
+
+
         <div class="container-lg">
             <div class="row">
-        <h2 class="text-light text-center my-5 p-5 display-5">Everything Must Go!</h2>
-      <div class="col-6 mt-5">
+        <h2 class="text-light text-center my-2 p-5 display-2">Everything Must Go!</h2>
+      <div class="col-12 mt-5">
+
         <p class="lead my-4 text-light text-justify">Everything Must Go! is an online multiplayer racing game in which players
           are contestants of a game show in which must collect and checkout as many items as they can 
           before they run out of time. Players can also interfere with their rivals by ramming into them in 
           order to make them spill items and also can grab and trigger power-ups.
         </p>
-      </div>
 
-      <div class="col-lg-6 d-none d-md-flex align-items-center justify-content-center">
-        <div class="embed-responsive embed-responsive-16by9">
-          <iframe width="480px" height="360px" class="embed-responsive-item" src="https://www.youtube.com/embed/QuersdGu7Pw?si=jSaS7cq1vh4n-PpF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <p class="lead my-4 text-light text-justify">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, magnam omnis! Dolores numquam est itaque 
+          quia temporibus iure ipsum dolore adipisci soluta vel cum similique, ad asperiores laboriosam excepturi suscipit? 
+          Ab eum quo dolore nesciunt ad laudantium odio provident maiores? At maxime voluptatem repellat nemo eum mollitia quos! Exercitationem, quae.
+        </p>
+
+        <div class="embed-responsive embed-responsive-16by9 text-center mt-5">
+          <iframe width="720px" height="480px" class="embed-responsive-item" src="https://www.youtube.com/embed/QuersdGu7Pw?si=T_filksnH0lpefds" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
       </div>
 
@@ -73,102 +85,286 @@
 
     <div class="row g-5 py-5 justify-content-around">
 
-      <!--==================================== Accordion ======================================-->
-      <div class="col-12">
-        <div class="accordion" id="EMGMechanics">
-          <div class="accordion-item">
-            <!--Header and button that will collapse or expand the accordion-->
-            <h2 class="accordion-header" id="heading-1">
-              <button class="accordion-button fw-bold" type="button" 
-              data-bs-toggle="collapse" data-bs-target="#mechanics" 
-              aria-expanded="true" aria-controls="mechanics"> <!-- TARGET = the id of the section that is going to toggle-->
-              Mechanics
-              </button>
-            </h2>
-            <!--Content of the accordion, declaring the id that we previously assigned-->
-            <div id="mechanics" class="accordion-collapse 
-            collapse hide" aria-labelledby="heading-1" data-bs-parent="#mechanics">
-              <div class="accordion-body">
-                
-                <div class="list-group">
-                    <div class="list-group-item py-3">
-                      <h5 class="mb-1">Inventory System</h5>
-                      <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                        Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-                        Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-                        Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
-        
-                        <pre class="pre-scrollable bg-light"><code>
-        
-                          int main()
-                          {
-                            std::cout<<"Hello World!"<<\std::endl;
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                          void makeThisScroll()
-                          {
-                  
-                          }
-                  
-                        </code></pre>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<!--==================================== Accordion ======================================-->
+<div class="col-12">
+  <div class="accordion" id="EMGInventory">
+
+<!--==============================================Accordion item============================================================-->
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#mechanics" 
+    aria-expanded="true" aria-controls="mechanics"> <!-- TARGET = the id of the section that is going to toggle-->
+    Inventory System
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="mechanics" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#mechanics">
+    <div class="accordion-body">
       
+  <div class="list-group">
+      <div class="list-group-item py-3">
+        <h5 class="mb-1">Inventory System</h5>
+        <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
+          Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
+          Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+
+<p>Here is some sample code:</p>
+        
+<!--Sample code here for the mechanic-->
+
+<pre class="pre-scrollable bg-light"><code>
+        
+#include &ltiostream&gt
+
+  int main() {
+    // Declare a variable with an interesting name
+    int iAmConfused = 42;
+
+    // Display a confusing message
+    std::cout << "I am not sure what I am doing, but let's try this: " << iAmConfused << std::endl;
+
+    // Perform a mysterious operation
+    iAmConfused = iAmConfused + iAmConfused;
+
+    // Display the result of the mysterious operation
+    std::cout << "Now I am even more confused: " << iAmConfused << std::endl;
+
+    // Attempt to add confusion to the user
+    std::cout << "Please enter a number to add to the confusion: ";
+    int userInput;
+    std::cin >> userInput;
+
+    // Display the result of the user's attempt to add confusion
+    std::cout << "You just made it even more perplexing: " << iAmConfused + userInput << std::endl;
+
+    // Declare victory over confusion
+    std::cout << "I think I won the confusion game! Hooray!" << std::endl;
+
+    return 0;
+}
+</code></pre>
+<!--Closing the sample code for the mechanic-->
+
+<div class="text-center my-5">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--==============================================================================================================-->
+
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#powerups" 
+    aria-expanded="true" aria-controls="powerups"> <!-- TARGET = the id of the section that is going to toggle-->
+    Powerups
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="powerups" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#powerups">
+    <div class="accordion-body">
+      
+      <div class="list-group">
+          <div class="list-group-item py-3">
+            <h5 class="mb-1">Powerups</h5>
+            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
+              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
+              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+              <p>Here is some sample code:</p>
+          
+
+<!--Sample code here for the mechanic-->  
+  <pre class="pre-scrollable bg-light"><code>
+          
+#include &ltiostream&gt
+#include &ltcstdlib&gt
+#include &ltctime&gt
+
+class GalacticMatrix {
+public:
+    GalacticMatrix(int rows, int cols) : rows(rows), cols(cols) {
+        matrix = new int*[rows];
+        for (int i = 0; i < rows; ++i) {
+            matrix[i] = new int[cols];
+        }
+        fillMatrix();
+    }
+
+    ~GalacticMatrix() {
+        for (int i = 0; i < rows; ++i) {
+            delete[] matrix[i];
+        }
+        delete[] matrix;
+    }
+
+    void displayMatrix() {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                std::cout << matrix[i][j] << '\t';
+            }
+            std::cout << std::endl;
+        }
+    }
+
+private:
+    int rows;
+    int cols;
+    int** matrix;
+
+    void fillMatrix() {
+        srand(time(0));
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                matrix[i][j] = rand() % 100;
+            }
+        }
+    }
+};
+
+int main() {
+    std::cout << "Initializing the Quantum Entangled Galactic Matrix:" << std::endl;
+
+    GalacticMatrix quantumMatrix(5, 5);
+    quantumMatrix.displayMatrix();
+
+    std::cout << "Performing Hyperdimensional Transmogrification..." << std::endl;
+    std::cout << "Quantum Flux Capacitance: " << rand() % 100 << std::endl;
+
+    std::cout << "Analyzing Subspace Anomalies..." << std::endl;
+    std::cout << "Anomaly Detection Level: " << rand() % 100 << "%" << std::endl;
+
+    std::cout << "Initiating Quantum Superposition of Cosmic Energies..." << std::endl;
+    std::cout << "Cosmic Energy Flux: " << rand() % 1000 << " Gigawatts" << std::endl;
+
+    std::cout << "Quantum Entangled Galactic Matrix successfully transmogrified!" << std::endl;
+
+    return 0;
+}
+    
+  </code></pre>
+
+  <!--Closing the sample code for the mechanic-->
+  
+  <div class="text-center my-5">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--======================================================================================================================================-->
+
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#audio" 
+    aria-expanded="true" aria-controls="audio"> <!-- TARGET = the id of the section that is going to toggle-->
+    Audio
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="audio" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#audio">
+    <div class="accordion-body">
+      
+      <div class="list-group">
+          <div class="list-group-item py-3">
+            <h5 class="mb-1">Audio</h5>
+            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
+              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
+              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+              <p>Here is some sample code:</p>
+          
+
+<!--Sample code here for the mechanic-->  
+  <pre class="pre-scrollable bg-light"><code>
+          
+#include &ltiostream&gt
+#include &ltcstdlib&gt
+#include &ltctime&gt
+
+class QuantumProcessor {
+public:
+    QuantumProcessor() {
+        std::cout << "Initializing Quantum Processor..." << std::endl;
+        std::cout << "Quantum Bits Allocated: " << quantumBits.size() << std::endl;
+    }
+
+    void entangleBits() {
+        std::cout << "Entangling Quantum Bits..." << std::endl;
+        std::random_shuffle(quantumBits.begin(), quantumBits.end());
+    }
+
+    void measureBits() {
+        std::cout << "Measuring Quantum Bits..." << std::endl;
+        int sum = 0;
+        for (int bit : quantumBits) {
+            sum += bit;
+        }
+        std::cout << "Quantum Measurement Result: " << sum << std::endl;
+    }
+
+    ~QuantumProcessor() {
+        std::cout << "Quantum Processor Deallocated." << std::endl;
+    }
+
+private:
+    std::vector&ltint&gt quantumBits = {0, 1, 1, 0, 1, 0, 1, 1};
+};
+
+int main() {
+    QuantumProcessor quantumComputer;
+
+    std::cout << "Performing Quantum Operations:" << std::endl;
+
+    quantumComputer.entangleBits();
+    quantumComputer.measureBits();
+
+    std::cout << "Quantum Computation Complete!" << std::endl;
+
+    return 0;
+}
+    
+    
+  </code></pre>
+
+  <!--Closing the sample code for the mechanic-->
+  
+  <div class="text-center my-5">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--======================================================================================================================================-->
+
+
+
+
+    </div>
+  </div>
+</div>
+      
+<!---------------------------------------------------End of accordion--------------------------------------------------------->
+    
     </div> 
     </div>
     </section>
