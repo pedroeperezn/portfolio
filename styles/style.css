@@ -92,6 +92,11 @@ body
   background-image: url(../Images/emgSplash.png); 
 }
 
+#wimmBanner
+{
+  background-image: url(../Images/wimmSplash.png); 
+}
+
 .banner
 {
   height: 400px;

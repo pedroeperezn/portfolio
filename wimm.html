@@ -19,7 +19,7 @@
       <nav class="navbar navbar-expand-md navbar-light">
         <div class="container-xxl">
 
-          <a href="#intro" class="navbar-brand">
+          <a href="./index.html" class="navbar-brand">
             <span class="fw-bold text-secondary">Pedro Enrique Perez</span>
           </a>
 
@@ -51,7 +51,358 @@
 
 <!--==========================================Content=======================================================================-->
     <main>
+    <section id="WIMM" class="bg-dark">
 
+      <div class="container-fluid">
+        <div id="wimmBanner" class="row banner">
+        </div>
+      </div>
+
+
+        <div class="container-lg">
+            <div class="row">
+        <h2 class="text-light text-center my-2 p-5 display-2">Where is my Mind?</h2>
+      <div class="col-12 mt-5">
+
+        <p class="lead my-4 text-light text-justify">"Where Is My Mind?" is a 3D top down puzzle game in which you play as Dr. Merriweather, 
+          an amnesiac man who wakes up in a neglected asylum and needs to find his way out by solving a series of musical puzzles.
+        </p>
+
+        <p class="lead my-4 text-light text-justify">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Autem odit harum possimus sed corrupti mollitia asperiores aut similique? 
+          Voluptatum pariatur provident quasi dolorum harum sed numquam asperiores, 
+          necessitatibus perferendis consectetur ipsum laborum saepe illo amet assumenda sit tenetur expedita optio facilis fugit. 
+          Quas numquam, veniam nihil aliquam corrupti unde, facere, ex ratione minus placeat rem ut eligendi rerum! Facilis, ab.
+        </p>
+
+        <div class="embed-responsive embed-responsive-16by9 text-center mt-5">
+          <iframe width="720px" height="480px" class="embed-responsive-item" src="https://www.youtube.com/embed/IA_WRKm6SF8?si=BM0TH4Dv-6kQIlGx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row g-5 py-5 justify-content-around">
+
+<!--==================================== Accordion ======================================-->
+<div class="col-12">
+  <div class="accordion" id="wimmAccordion">
+
+<!--==============================================Accordion item============================================================-->
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#kalimba" 
+    aria-expanded="true" aria-controls="kalimba"> <!-- TARGET = the id of the section that is going to toggle-->
+    Kalimba (Musical Instrument)
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="kalimba" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#kalimba">
+    <div class="accordion-body">
+      
+  <div class="list-group">
+      <div class="list-group-item py-3">
+        <h5 class="mb-1">Kalimba</h5>
+        <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
+          Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
+          Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+
+<p>Here is some sample code:</p>
+        
+<!--Sample code here for the mechanic-->
+
+<pre class="pre-scrollable bg-light"><code>
+        
+using System;
+class GalacticAdventurer
+{
+  static void Main()
+  {
+      Console.WriteLine("Welcome, Galactic Adventurer!");
+
+      // Generate a random space creature name
+      string spaceCreature = GenerateRandomSpaceCreature();
+      Console.WriteLine($"You are about to encounter a fearsome {spaceCreature}!");
+
+      // Simulate a space battle
+      Console.WriteLine("Initiating Space Battle...");
+
+      int playerHealth = 100;
+      int spaceCreatureHealth = new Random().Next(50, 101);
+
+      while (playerHealth > 0 && spaceCreatureHealth > 0)
+      {
+          // Player attacks the space creature
+          int playerAttack = new Random().Next(10, 21);
+          spaceCreatureHealth -= playerAttack;
+          Console.WriteLine($"You attack the {spaceCreature} and deal {playerAttack} damage!");
+
+          // Space creature counterattacks
+          int creatureAttack = new Random().Next(5, 16);
+          playerHealth -= creatureAttack;
+          Console.WriteLine($"The {spaceCreature} counterattacks and deals {creatureAttack} damage!");
+
+          // Display health status
+          Console.WriteLine($"Your Health: {playerHealth} | {spaceCreature} Health: {spaceCreatureHealth}");
+          Console.WriteLine();
+      }
+
+      // Display the outcome of the space battle
+      if (playerHealth > 0)
+      {
+          Console.WriteLine($"Congratulations! You defeated the {spaceCreature}. You are a true Galactic Hero!");
+      }
+      else
+      {
+          Console.WriteLine($"Oh no! The {spaceCreature} was too powerful. Better luck next time, Galactic Adventurer.");
+      }
+  }
+
+  static string GenerateRandomSpaceCreature()
+  {
+      string[] spaceCreatures = { "Zorgon", "Nebula Serpent", "Quasar Beast", "Galactic Kraken", "Stellar Phoenix" };
+      int randomIndex = new Random().Next(spaceCreatures.Length);
+      return spaceCreatures[randomIndex];
+  }
+}
+
+</code></pre>
+<!--Closing the sample code for the mechanic-->
+
+<div class="text-center my-5">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--==============================================================================================================-->
+
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#puzzlemanager" 
+    aria-expanded="true" aria-controls="puzzlemanager"> <!-- TARGET = the id of the section that is going to toggle-->
+    Puzzle Manager
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="puzzlemanager" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#puzzlemanager">
+    <div class="accordion-body">
+      
+      <div class="list-group">
+          <div class="list-group-item py-3">
+            <h5 class="mb-1">Puzzle Manager</h5>
+            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
+              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
+              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+              <p>Here is some sample code:</p>
+          
+
+<!--Sample code here for the mechanic-->  
+  <pre class="pre-scrollable bg-light"><code>
+          
+using System;
+class CyberPetSimulator
+{
+    static void Main()
+    {
+        Console.WriteLine("Welcome to the Cyber Pet Simulator!");
+
+        // Create a virtual cyber pet
+        CyberPet myPet = new CyberPet("ByteBot");
+
+        // Interact with the cyber pet
+        Console.WriteLine($"You adopted a cyber pet named {myPet.Name}!");
+        Console.WriteLine($"Initial happiness level: {myPet.Happiness}");
+
+        Console.WriteLine("Playing with your cyber pet...");
+        myPet.Play();
+        Console.WriteLine($"Happiness after playtime: {myPet.Happiness}");
+
+        Console.WriteLine("Feeding your cyber pet...");
+        myPet.Feed();
+        Console.WriteLine($"Happiness after feeding: {myPet.Happiness}");
+
+        Console.WriteLine("Taking your cyber pet to the virtual doctor...");
+        myPet.VisitDoctor();
+        Console.WriteLine($"Happiness after the virtual doctor visit: {myPet.Happiness}");
+
+        Console.WriteLine("Your cyber pet says goodbye!");
+    }
+}
+
+class CyberPet
+{
+    public string Name { get; }
+    public int Happiness { get; private set; }
+
+    public CyberPet(string name)
+    {
+        Name = name;
+        Happiness = 50; // Initial happiness level
+    }
+
+    public void Play()
+    {
+        Console.WriteLine($"Playing with {Name}...");
+        Happiness += 20;
+    }
+
+    public void Feed()
+    {
+        Console.WriteLine($"Feeding {Name}...");
+        Happiness += 10;
+    }
+
+    public void VisitDoctor()
+    {
+        Console.WriteLine($"Taking {Name} to the virtual doctor...");
+        Happiness -= 15;
+    }
+}
+    
+</code></pre>
+
+  <!--Closing the sample code for the mechanic-->
+  
+  <div class="text-center my-5">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--======================================================================================================================================-->
+
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#audio" 
+    aria-expanded="true" aria-controls="audio"> <!-- TARGET = the id of the section that is going to toggle-->
+    Audio Programming
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="audio" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#audio">
+    <div class="accordion-body">
+      
+      <div class="list-group">
+          <div class="list-group-item py-3">
+            <h5 class="mb-1">Audio Programming</h5>
+            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
+              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
+              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
+              <p>Here is some sample code:</p>
+          
+
+<!--Sample code here for the mechanic-->  
+  <pre class="pre-scrollable bg-light"><code>
+          
+using System;
+class EmojiArtGenerator
+{
+    static void Main()
+    {
+        Console.WriteLine("Welcome to the Emoji Art Generator!");
+
+        Console.WriteLine("Enter the size of your emoji canvas (rows x columns):");
+        Console.Write("Rows: ");
+        int rows = int.Parse(Console.ReadLine());
+
+        Console.Write("Columns: ");
+        int columns = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Generating Emoji Art...");
+
+        string[,] emojiCanvas = GenerateEmojiArt(rows, columns);
+
+        // Display the generated emoji art
+        DisplayEmojiArt(emojiCanvas);
+
+        Console.WriteLine("Emoji Art Complete! Share your masterpiece with the world!");
+    }
+
+    static string[,] GenerateEmojiArt(int rows, int columns)
+    {
+        string[,] emojiCanvas = new string[rows, columns];
+
+        // Fill the canvas with random emojis
+        Random random = new Random();
+        string[] emojis = { "😀", "🌟", "🚀", "💡", "🎨", "❤️", "🍕", "🎉", "🌈", "👾" };
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                int randomIndex = random.Next(emojis.Length);
+                emojiCanvas[i, j] = emojis[randomIndex];
+            }
+        }
+
+        return emojiCanvas;
+    }
+
+    static void DisplayEmojiArt(string[,] emojiCanvas)
+    {
+        Console.WriteLine("Your Emoji Art:");
+
+        int rows = emojiCanvas.GetLength(0);
+        int columns = emojiCanvas.GetLength(1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                Console.Write(emojiCanvas[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
+
+
+  </code></pre>
+
+  <!--Closing the sample code for the mechanic-->
+  
+  <div class="text-center my-5">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--======================================================================================================================================-->
+
+
+
+
+    </div>
+  </div>
+</div>
+      
+<!---------------------------------------------------End of accordion--------------------------------------------------------->
+    
+    </div> 
+    </div>
+    </section>
   
     </main>
 <!--=========================================================================================================================-->
