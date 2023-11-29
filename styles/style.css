@@ -89,12 +89,12 @@ body
 
 #emgBanner
 {
-  background-image: url(../Images/emgSplash.png); 
+  background-image: url(../Images/EMG/emgSplash.png); 
 }
 
 #wimmBanner
 {
-  background-image: url(../Images/wimmSplash.png); 
+  background-image: url(../Images/WIMM/wimmSplash.png); 
 }
 
 .banner

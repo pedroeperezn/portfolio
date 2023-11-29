@@ -90,7 +90,7 @@
           <br>
           For this game, I programmed network multiplayer mechanics and implemented audio. This meant using replication and remote procedural calls
           in most mechanics in order to ensure that the most relevant information was correctly shared between server and clients. The mechanics with which I collaborated for the project
-          were mainly related with item implementation and spawning, their collection and storage for the player, scoring, collecting and using modifiers/power-ups, audio implementation, 
+          were mainly related with item implementation and spawning, their collection and storage for players, scoring, collecting and using modifiers/power-ups, audio implementation, 
           UI programming and debug tools implementation using ImGUI. 
         </p>
 
@@ -121,34 +121,38 @@
       
   <div class="list-group">
       <div class="list-group-item py-3">
+
+        <div class="text-center my-5">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+
         <h5 class="mb-1">The Idea</h5>
 
 
 <p>
   The core game loop of "Everything Must Go!" is based on the idea of players going around the level looking for items, filling their shopping cart with them
-  , and checking them out to score points. This implies that each player has a limited space for items that they can carry at a time, 
-  each item must have a size and a monetary value, and, in order to score, players should carry their items to the checkout stand, which should translate
-  the monetary value of each product into the score and clear them from the cart for the players to collect more items. 
+  , and checking them out to score points. This implies that each player has a limited space for items that they can carry at a time and that 
+  each item must have a size, a monetary value and weight that will affect the player's movement as the cart gets heavier/fuller.  
+  In order to score, players should carry their items to the checkout stand, which should translate the monetary value of each product into the score and clear them 
+  from the cart. 
 </p>
 
-<h6 class="my-4">Shopping Items</h6>
+<h5 class="my-4">Shopping Items</h5>
 
 <p>
-  Given that items will have size and monetary value, it would be fair for those values to be related, meaning that the bigger items should award
-  more points to the player given that they meant a bigger sacrifice for them to carry around. 
+  Given that items will have size and monetary value, it would be fair for those values to be related, meaning that the bigger items should be heavier and award
+  more points to the player given that they meant a bigger sacrifice to carry around. 
   We also had the goal of making items easily accessible in editor, modifiable and expandable in order for our team's game designers to be able to
   easily add and tune the data of each item. In order to achieve this, we decided to use 
   Unreal Engine's Data Tables:
 </p>
 
 <div class="text-center my-5">
-  <img class="img-fluid" src="./Images/emgDataTables.PNG">
+  <img class="img-fluid" src="./Images/EMG/emgDataTables.PNG">
 </div>
 
-<p>Once the items were defined in the data tables, I created a C++ class for them including the data we exposed on the tables:</p>
-        
-<!--Sample code here for the mechanic-->
-
+<p>Once the items were defined in the data tables, I created a C++ class for them including the data we exposed on the tables: </p>
+<!--======================================================================Shopping Item Sample Code=================================================================================-->
 <pre class="pre-scrollable"><code class=" language-cpp">
         
   // Copyright (c) 2023 @ Runaway Concepts
@@ -180,6 +184,7 @@
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     UNiagaraComponent* NiagaraComponent;
     
+    //Struct used in the player inventory to keep track of amount of items
     UPROPERTY(EditAnywhere,BlueprintReadWrite)
     FItemsInInventory Item;
   
@@ -198,94 +203,281 @@
   };
   
 </code></pre>
-<!--Closing the sample code for the mechanic-->
+<!--==============================================================================================================================================================================-->
 
-<p>Then, I engineered an actor that would serve as a spawner. Said spawner should be able to grab data from a selected data table,
-  assigned the properties to a "ShoppingItem" actor, and spawn them constantly at a fixed amount of time.
-</p>
+<br>
+<p>I also created a helper struct called FItemsInInventory, which would be the way in which the player could store the essential information of each shopping item they picked up:</p>
+<br>
 
-
-<!--Sample code here for the mechanic-->
-
-<pre class="pre-scrollable"><code class=" language-cpp">
-        
-  void AEMGItemSpawner::Server_Spawn_Implementation()
+<!--===================================================================================================================================-->
+<pre class="pre-scrollable"><code class=" language-cpp">  
+  USTRUCT(BlueprintType)
+  struct FItemsInInventory : public FTableRowBase
   {
-    if(bCanSpawn && TypeOfSpawnable == ETypoeOfSpawnable::ShoppingItem)
-    {
-      //UE_LOG(LogTemp, Display, TEXT("Spawning"));
-      FActorSpawnParameters ActorSpawnParams;
-      ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-    
-      if(!ItemDataTable)
-      {
-        UE_LOG(LogTemp,Warning,TEXT("No data table loaded"));
-        return;
-      }
-    
-      TArray&ltFName&gt ItemsInDT = ItemDataTable->GetRowNames();
-      int32 NumberOfItems = ItemsInDT.Num();
-    
-      if(NumberOfItems == 0)
-      {
-        UE_LOG(LogTemp,Warning,TEXT("Empty Data Table"));
-        return;
-      }
-    
-      int32 RandomItemNumber = FMath::RandRange(0, NumberOfItems-1);
-    
-      FItemsInInventory* newItem = ItemDataTable->FindRow&ltFItemsInInventory&gt(ItemsInDT[RandomItemNumber],TEXT("Looking for random item"));
-      
-    
-      checkf(newItem, TEXT("Error loading item from Data Table to spawn item"));
-    
-      ItemsInInventory = *newItem;
-    
-      AShoppingItem* ShoppingItem = GetWorld()->SpawnActor&ltAShoppingItem&gt(ItemToSpawnBP,
-        BillboardComponent->GetComponentLocation(),
-        BillboardComponent->GetComponentRotation(), ActorSpawnParams);
-    
-      if(ShoppingItem)
-      {
-        ShoppingItem->Item = ItemsInInventory;
-    
-        ShoppingItem->FindComponentByClass&ltUStaticMeshComponent&gt()->SetStaticMesh(ItemsInInventory.ItemMesh);
-        ShoppingItem->SetParticle(ItemsInInventory.NiagaraParticles);
-        
-        ShoppingItem->ItemSpawner = this;
-        bCanSpawn = false;
   
-        if(ShoppingItem->Item.ItemSize == EItemSize::Large)
-        {
-          PlayHighValueAudioCue();
-        }
-      }
+    GENERATED_BODY()
+    
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+    FString ItemType;
+  
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+    float Value;
+  
+    UPROPERTY(EditAnywhere,BlueprintReadOnly)
+    TEnumAsByte&ltEItemSize&gt ItemSize;
+  
+    UPROPERTY(EditAnywhere,BlueprintReadWrite)
+    UStaticMesh* ItemMesh;
+    
+    UPROPERTY(EditAnywhere,BlueprintReadWrite)
+    UNiagaraSystem* NiagaraParticles;
+    
+  };
+  </code></pre>
+<!--===================================================================ITEM SPAWNER========================================================================================-->
+<br>
+<h5 class="my-4">Item Spawning</h5>
+
+<p>
+  For spawning items, I engineered an actor that would serve as a spawner. Said spawner should be able to grab data from a selected data table assignable in editor,
+  set properties for a "ShoppingItem" actor, and spawn them constantly at a fixed amount of time.
+</p>
+<br>
+
+<!--====================================================Item Spawner Sample Code===================================================================-->
+<pre class="pre-scrollable"><code class=" language-cpp">  
+void AEMGItemSpawner::Server_Spawn_Implementation()
+{
+  //Check if the spawner is going to be a shopping item and that the spawner is enabled
+  if(bCanSpawn && TypeOfSpawnable == ETypoeOfSpawnable::ShoppingItem)
+  {
+    //Set spawning parameters
+    FActorSpawnParameters ActorSpawnParams;
+    ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+  
+    //Make sure that the data table was assigned
+    if(!ItemDataTable)
+    {
+      UE_LOG(LogTemp,Warning,TEXT("No data table loaded"));
+      return;
     }
   
-    else if(bCanSpawn && TypeOfSpawnable == ETypoeOfSpawnable::Powerup )
-    {
-      FActorSpawnParameters ActorSpawnParams;
-      ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-      
-      AEMG_PowerupPickup* Powerup = GetWorld()->SpawnActor&ltAEMG_PowerupPickup&gt(ItemToSpawnBP,
-        BillboardComponent->GetComponentLocation(),
-        BillboardComponent->GetComponentRotation(), ActorSpawnParams);
+    //Check how many different items are there in the DT
+    TArray&ltFName&gt ItemsInDT = ItemDataTable->GetRowNames();
+    int32 NumberOfItems = ItemsInDT.Num();
   
-        if(Powerup)
-        {
-          Powerup->ItemSpawner = this;
-          bCanSpawn = false;
-        }
+    if(NumberOfItems == 0)
+    {
+      UE_LOG(LogTemp,Warning,TEXT("Empty Data Table"));
+      return;
     }
   
+    //Create a new item with the properties of a random row in the DT
+    int32 RandomItemNumber = FMath::RandRange(0, NumberOfItems-1);
+    FItemsInInventory* newItem = ItemDataTable->FindRow&ltFItemsInInventory&gt(ItemsInDT[RandomItemNumber],TEXT("Looking for random item"));
+    
+    
+    checkf(newItem, TEXT("Error loading item from Data Table to spawn item"));
+  
+    ItemsInInventory = *newItem;
+  
+    //Spawn shopping item with properties from the data table row
+    AShoppingItem* ShoppingItem = GetWorld()->SpawnActor&ltAShoppingItem&gt(ItemToSpawnBP,
+      BillboardComponent->GetComponentLocation(),
+      BillboardComponent->GetComponentRotation(), ActorSpawnParams);
+  
+    if(ShoppingItem)
+    {
+      ShoppingItem->Item = ItemsInInventory;
+  
+      ShoppingItem->FindComponentByClass&ltUStaticMeshComponent&gt()->SetStaticMesh(ItemsInInventory.ItemMesh);
+      ShoppingItem->SetParticle(ItemsInInventory.NiagaraParticles);
+      
+      ShoppingItem->ItemSpawner = this;
+      bCanSpawn = false;
+
+      if(ShoppingItem->Item.ItemSize == EItemSize::Large)
+      {
+        PlayHighValueAudioCue();
+      }
+    }
   }
+}
 </code></pre>
-<!--Closing the sample code for the mechanic-->
+<!--==========================================================================================================================================================-->
+
+<br>
+<h5 class="my-4">Player Inventory</h5>
+<p>  
+  The player inventory is the UActorComponent responsible for keeping track of how many and which items the player is carrying at a given time in their cart. 
+  It holds all the information regarding cart capacity, cart's remaining space, current stored value, and also declares functions that will place items new items into the cart,
+  remove them, or empty it. 
+</p>
+<br>
+
+<!--===================================================================Inventory Component========================================================================================-->
+<pre class="pre-scrollable"><code class=" language-cpp">  
+// Copyright (c) 2023 @ Runaway Concepts
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "EMGUtils.h"
+
+#include "EMGPlayerInventory.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddInventoryItem, FItemsInInventory, ItemAdded);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveInventoryItem, FItemsInInventory, ItemRemoved);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCheckOut);
 
-<div class="text-center my-5">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class EVERYTHINGMUSTGO_API UEMGPlayerInventory : public UActorComponent
+{
+  GENERATED_BODY()
+
+public:	
+  // Sets default values for this component's properties
+  UEMGPlayerInventory();
+
+  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  float InventoryCapacity = 10;
+
+  UPROPERTY()
+  float InitialInventoryCapacity;
+
+  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  float ItemCount;
+  
+  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  float ItemSpace;
+
+  UPROPERTY()
+  bool bIsWeightAffectingMovement = true;
+
+  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  TArray&ltFItemsInInventory&gt PlayerInventory;
+  
+  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  float TotalValueCollected;
+
+  UPROPERTY(BlueprintReadOnly)
+  ACharacter* PlayerRef;
+
+  UFUNCTION(Server,Reliable,BlueprintCallable)
+  void Server_AddItemToInventory(FItemsInInventory ItemToAdd);
+  
+  UFUNCTION(NetMulticast, Reliable,BlueprintCallable)
+  void Multicast_AddToInventory(FItemsInInventory ItemsInInventory);
+
+  UFUNCTION(Server,Reliable,BlueprintCallable)
+  void Server_AddMultipleItemsToInventory(const TArray&ltFItemsInInventory&gt& ItemsToAdd);
+
+  UFUNCTION(NetMulticast, Reliable,BlueprintCallable)
+  void Multicast_AddMultipleItemsToInventory(const TArray&ltFItemsInInventory&gt& ItemsToAdd);
+
+  UFUNCTION(Server,Reliable,BlueprintCallable)
+  void Server_RemoveLastItem();
+  
+  UFUNCTION(NetMulticast,Reliable,BlueprintCallable)
+  void MulticastRemoveLastItem();
+
+  UFUNCTION(Server,Reliable,BlueprintCallable)
+  void Server_RemoveFirstItem();
+  
+  UFUNCTION(NetMulticast,Reliable,BlueprintCallable)
+  void MulticastRemoveFirstItem();
+
+  UFUNCTION()
+  void UpdateTotalValueCollected();
+
+
+  UFUNCTION(Server,Reliable, BlueprintCallable)
+  void Server_EmptyInventory();
+
+  UFUNCTION(NetMulticast,Reliable)
+  void Multicast_EmptyInventory();
+
+  UFUNCTION()
+  void UpdatePlayersCartWeight();
+
+  UFUNCTION(BlueprintCallable)
+  FORCEINLINE bool IsFull() const
+  {
+    return ItemSpace == 0;
+  }
+
+  UPROPERTY(BlueprintAssignable)
+  FOnAddInventoryItem OnAddItemToInventory;
+  UPROPERTY(BlueprintAssignable)
+  FOnRemoveInventoryItem OnRemoveInventoryItem;
+  UPROPERTY(BlueprintAssignable)
+  FOnCheckOut OnCheckOut;
+
+protected:
+
+  // Called when the game starts
+  virtual void BeginPlay() override;
+
+  UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Item Slowdown Multipliers")
+  float MaxAccelerationMutliplier;
+
+  UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Item Slowdown Multipliers")
+  float MaxSpeedMultiplier;
+
+  UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Item Slowdown Multipliers")
+  float MassMultiplier;
+
+  UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Item Slowdown Multipliers")
+  float FrictionMultiplier;
+
+public:	
+  // Called every frame
+  virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+    
+};
+</code></pre>
+<!--=======================================================================================================================================================================-->
+
+<h5 class="my-4">Collecting Items</h5>
+<p>  
+  The method for storing items into the cart is fairly simple. Each Shopping Item holds a variable of the FItemsInInventory type which, when a player interacts with it (and if there is
+  still space remaining for the item in the inventory), will be copied into an array of FItemsInInventory inside of the player inventory. In order for the server and clients to 
+  have proper knowledge of the item that was stored and it's weight, size and monetary values, the function needed to be called with an RPC:
+
+</p>
+<br>
+<!--====================================================Add item to inventory RPC===================================================================-->
+
+<pre class="pre-scrollable"><code class=" language-cpp">  
+void UEMGPlayerInventory::Server_AddItemToInventory_Implementation(FItemsInInventory ItemToAdd)
+{
+  Multicast_AddToInventory(ItemToAdd);
+}
+
+//Adds new collected item to the players inventory
+void UEMGPlayerInventory::Multicast_AddToInventory_Implementation(FItemsInInventory ItemsInInventory)
+{
+	//Add the new item as a copy
+	ItemCount += ItemsInInventory.ItemSize;
+	ItemSpace -= ItemsInInventory.ItemSize;
+
+	PlayerInventory.Add(ItemsInInventory);
+	UpdateTotalValueCollected();
+	OnAddItemToInventory.Broadcast(ItemsInInventory);
+
+	//TODO: Implement logic for affecting the players movement
+	UpdatePlayersCartWeight();
+}
+</code></pre>
+<!--==========================================================================================================================================================-->
+<div class="my-5">
+  <div class="row text-center">
+    <div class="col-3"></div>
+    <img src="./Images/EMG/emgCollectItemGIF.gif" class="img-fluid col-6">
+  </div>
 </div>
 
       </div>
