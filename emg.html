@@ -122,9 +122,11 @@
   <div class="list-group">
       <div class="list-group-item py-3">
 
+        <!--
         <div class="text-center my-5">
           <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
+      -->
 
         <h5 class="mb-1">The Idea</h5>
 
@@ -480,6 +482,10 @@ void UEMGPlayerInventory::Multicast_AddToInventory_Implementation(FItemsInInvent
   </div>
 </div>
 
+<div class="mt-auto text-center">
+  <a href="https://vfs-gdpg.itch.io/everything-must-go" class="btn btn-primary">Link to VFS Arcade</a>
+</div>
+
       </div>
     </div>
   </div>
@@ -487,199 +493,6 @@ void UEMGPlayerInventory::Multicast_AddToInventory_Implementation(FItemsInInvent
 
 <!--==============================================================================================================-->
 
-<div class="accordion-item">
-  <!--Header and button that will collapse or expand the accordion-->
-  <h2 class="accordion-header" id="heading-1">
-    <button class="accordion-button fw-bold collapsed" type="button" 
-    data-bs-toggle="collapse" data-bs-target="#powerups" 
-    aria-expanded="true" aria-controls="powerups"> <!-- TARGET = the id of the section that is going to toggle-->
-    Powerups
-    </button>
-  </h2>
-  <!--Content of the accordion, declaring the id that we previously assigned-->
-  <div id="powerups" class="accordion-collapse 
-  collapse hide" aria-labelledby="heading-1" data-bs-parent="#powerups">
-    <div class="accordion-body">
-      
-      <div class="list-group">
-          <div class="list-group-item py-3">
-            <h5 class="mb-1">Powerups</h5>
-            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
-              <p>Here is some sample code:</p>
-          
-
-<!--Sample code here for the mechanic-->  
-  <pre class="pre-scrollable"><code>
-          
-#include &ltiostream&gt
-#include &ltcstdlib&gt
-#include &ltctime&gt
-
-class GalacticMatrix {
-public:
-    GalacticMatrix(int rows, int cols) : rows(rows), cols(cols) {
-        matrix = new int*[rows];
-        for (int i = 0; i < rows; ++i) {
-            matrix[i] = new int[cols];
-        }
-        fillMatrix();
-    }
-
-    ~GalacticMatrix() {
-        for (int i = 0; i < rows; ++i) {
-            delete[] matrix[i];
-        }
-        delete[] matrix;
-    }
-
-    void displayMatrix() {
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                std::cout << matrix[i][j] << '\t';
-            }
-            std::cout << std::endl;
-        }
-    }
-
-private:
-    int rows;
-    int cols;
-    int** matrix;
-
-    void fillMatrix() {
-        srand(time(0));
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                matrix[i][j] = rand() % 100;
-            }
-        }
-    }
-};
-
-int main() {
-    std::cout << "Initializing the Quantum Entangled Galactic Matrix:" << std::endl;
-
-    GalacticMatrix quantumMatrix(5, 5);
-    quantumMatrix.displayMatrix();
-
-    std::cout << "Performing Hyperdimensional Transmogrification..." << std::endl;
-    std::cout << "Quantum Flux Capacitance: " << rand() % 100 << std::endl;
-
-    std::cout << "Analyzing Subspace Anomalies..." << std::endl;
-    std::cout << "Anomaly Detection Level: " << rand() % 100 << "%" << std::endl;
-
-    std::cout << "Initiating Quantum Superposition of Cosmic Energies..." << std::endl;
-    std::cout << "Cosmic Energy Flux: " << rand() % 1000 << " Gigawatts" << std::endl;
-
-    std::cout << "Quantum Entangled Galactic Matrix successfully transmogrified!" << std::endl;
-
-    return 0;
-}
-    
-  </code></pre>
-
-  <!--Closing the sample code for the mechanic-->
-  
-  <div class="text-center my-5">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-  </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--======================================================================================================================================-->
-
-<div class="accordion-item">
-  <!--Header and button that will collapse or expand the accordion-->
-  <h2 class="accordion-header" id="heading-1">
-    <button class="accordion-button fw-bold collapsed" type="button" 
-    data-bs-toggle="collapse" data-bs-target="#audio" 
-    aria-expanded="true" aria-controls="audio"> <!-- TARGET = the id of the section that is going to toggle-->
-    Audio
-    </button>
-  </h2>
-  <!--Content of the accordion, declaring the id that we previously assigned-->
-  <div id="audio" class="accordion-collapse 
-  collapse hide" aria-labelledby="heading-1" data-bs-parent="#audio">
-    <div class="accordion-body">
-      
-      <div class="list-group">
-          <div class="list-group-item py-3">
-            <h5 class="mb-1">Audio</h5>
-            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
-              <p>Here is some sample code:</p>
-          
-
-<!--Sample code here for the mechanic-->  
-  <pre class="pre-scrollable bg-light"><code>
-          
-#include &ltiostream&gt
-#include &ltcstdlib&gt
-#include &ltctime&gt
-
-class QuantumProcessor {
-public:
-    QuantumProcessor() {
-        std::cout << "Initializing Quantum Processor..." << std::endl;
-        std::cout << "Quantum Bits Allocated: " << quantumBits.size() << std::endl;
-    }
-
-    void entangleBits() {
-        std::cout << "Entangling Quantum Bits..." << std::endl;
-        std::random_shuffle(quantumBits.begin(), quantumBits.end());
-    }
-
-    void measureBits() {
-        std::cout << "Measuring Quantum Bits..." << std::endl;
-        int sum = 0;
-        for (int bit : quantumBits) {
-            sum += bit;
-        }
-        std::cout << "Quantum Measurement Result: " << sum << std::endl;
-    }
-
-    ~QuantumProcessor() {
-        std::cout << "Quantum Processor Deallocated." << std::endl;
-    }
-
-private:
-    std::vector&ltint&gt quantumBits = {0, 1, 1, 0, 1, 0, 1, 1};
-};
-
-int main() {
-    QuantumProcessor quantumComputer;
-
-    std::cout << "Performing Quantum Operations:" << std::endl;
-
-    quantumComputer.entangleBits();
-    quantumComputer.measureBits();
-
-    std::cout << "Quantum Computation Complete!" << std::endl;
-
-    return 0;
-}
-    
-    
-  </code></pre>
-
-  <!--Closing the sample code for the mechanic-->
-  
-  <div class="text-center my-5">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-  </div>
-
-      </div>
-    </div>
-  </div>
-</div>
 
 <!--======================================================================================================================================-->
 
@@ -689,7 +502,7 @@ int main() {
     </div>
   </div>
 </div>
-      
+
 <!---------------------------------------------------End of accordion--------------------------------------------------------->
     
     </div> 
