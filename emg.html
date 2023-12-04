@@ -482,15 +482,199 @@ void UEMGPlayerInventory::Multicast_AddToInventory_Implementation(FItemsInInvent
   </div>
 </div>
 
-<div class="mt-auto text-center">
-  <a href="https://vfs-gdpg.itch.io/everything-must-go" class="btn btn-primary">Link to VFS Arcade</a>
-</div>
+
       </div>
     </div>
   </div>
 </div>
 
-<!--==============================================================================================================-->
+<!--==============================================================POWERUPS==============================================================================-->
+
+<div class="accordion-item">
+  <!--Header and button that will collapse or expand the accordion-->
+  <h2 class="accordion-header" id="heading-1">
+    <button class="accordion-button fw-bold collapsed" type="button" 
+    data-bs-toggle="collapse" data-bs-target="#powerups" 
+    aria-expanded="true" aria-controls="powerups"> <!-- TARGET = the id of the section that is going to toggle-->
+    Powerups
+    </button>
+  </h2>
+  <!--Content of the accordion, declaring the id that we previously assigned-->
+  <div id="powerups" class="accordion-collapse 
+  collapse hide" aria-labelledby="heading-1" data-bs-parent="#powerups">
+    <div class="accordion-body">
+      
+  <div class="list-group">
+      <div class="list-group-item py-3">
+
+        <!--
+        <div class="text-center my-5">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      -->
+
+<h5 class="mb-1">The Idea</h5>
+
+<p>
+  In order for gameplay to have more variation and possibilities, as well as for implementing a catch up mechanics, we decided to design a power up system based 
+  on existing mechanics that could enhance the player's abilities momentarily in order to gain advantage over the others. The design team decided that we were going
+  to work in 5 power-ups:
+
+  <ul>
+    <li>Speed Boost: The player's acceleration and maximum speed would increase considerably.</li>
+    <li>Shield: The player would be immune to ramming (can't loose items nor be propelled when attacked by other players).</li>
+    <li>Infinite Inventory: The player's cart would have a very big cap on the items they can carry, making it practically limitless.</li>
+    <li>Spawn Goo Trap: The player can spawn behind they a trap that will make players get stuck momentarily.</li>
+    <li>Spawn Slippery Trap: The player can spawn behind they a trap that will make other players spin and loose control of the cart momentarily. </li>
+  </ul>
+
+  In order to achieve so, I designed a system that took advantage of the spawning logic that was previously used for spawning shopping items, 
+  as well as engineered and implemented a power-up actor component that was in charge of the logic of assigning and using power-ups.
+
+</p>
+
+<!--===================================================Spawn powerup pickup==================================================================================-->
+
+<h5 class="my-4">Power Up Pickup</h5>
+<p>
+The way in which players can get a power-up assigned is by colliding with a power-up pickup, which are spawned in the level in a very similar fashion that
+the shopping items. I created a "EMGPowerupPickup" class which inherits from the "ShoppingItem" class. This made spawning power-up pickups easy, accessible in editor,
+and familiar to my Level Designer, who only needed to indicate the spawner that this spawner would be for power-up pickups and the spawner did the rest:
+</p>
+
+<!--======================================================================Spawn Powerup Code=================================================================================-->
+<pre class="pre-scrollable"><code class=" language-cpp">
+
+//Check if the assigned type of item is a shopping item or a power-up pickup
+else if(bCanSpawn && TypeOfSpawnable == ETypoeOfSpawnable::Powerup )
+{
+  //Set spawning param
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	
+	AEMG_PowerupPickup* Powerup = GetWorld()->SpawnActor&ltAEMG_PowerupPickup&gt(ItemToSpawnBP,
+	BillboardComponent->GetComponentLocation(),
+	BillboardComponent->GetComponentRotation(), ActorSpawnParams);
+	if(Powerup)
+	{
+		Powerup->ItemSpawner = this;
+		bCanSpawn = false;
+	}
+}      
+</code></pre>
+
+<div class="my-5">
+  <div class="row text-center">
+    <div class="col-3"></div>
+    <img src="./Images/EMG/EMGPowerupPickup.png" class="img-fluid col-6">
+  </div>
+</div>
+
+<!--======================================================================Powerup assigning==================================================================================-->
+<h5 class="my-4">Assigning power-ups</h5>
+<p>
+If the player isn't already a power-up holder, whenever colliding with a power-up pickup a power-up will be assigned to them. The assignment of the power-up depends on
+the current scores on the match, making that players with bigger scores will most likely be assigned the Goo Bomb or the Slippery Trap. Players with an average scores will
+have a tendency to be assigned the super speed power-up, and players that are behind in score will be more likely to be assigned either infinite inventory or the shield,
+which can potentially give a greater advantage on the match. 
+</p>
+
+<h6 class="my-4">Get Match's Score Average</h6>
+<pre class="pre-scrollable"><code class=" language-cpp"> 
+
+//Get average scores on match
+int UEMGPowerup::GetPlayerScoreAverage()
+{
+	int ScoreSum = 0;
+	int ScoreAverage = 0;
+	
+  //Get player array
+	TArray&ltAPlayerState&gt PlayerStates = GetWorld()->GetGameState()->PlayerArray;
+	
+	if(PlayerStates.Num() == 0)
+	{
+		return 0;
+	}
+
+  //for each player, get their score and add them to a sum, for later getting the average score
+	for (auto PlayerState : PlayerStates)
+	{
+		ScoreSum += PlayerState->GetScore();
+	}
+
+	ScoreAverage = ScoreSum/PlayerStates.Num();
+
+	return ScoreAverage;
+}
+</code></pre>
+
+<h6 class="my-4">Get powerup based on scores</h6>
+<pre class="pre-scrollable"><code class=" language-cpp"> 
+
+//Get the power-up that is going to be assigned to the player 
+EPowerUpType UEMGPowerup::GetRandomPowerup()
+{
+  //Get score average in match
+  float avgScore = GetPlayerScoreAverage();
+
+  //Tiers probability of power-up per tier (tier1 is More Useful, tier3 is less useful)
+  float tier1 = 0.25;
+  float tier2 = 0.35;
+  float tier3 = 0.40;
+
+  if(!PlayerRef)
+  {
+    return EPowerUpType::None;
+  }
+  
+  //Depending on the player's score compared with the average, assign more probability to specific power-up tiers
+  if(PlayerRef->GetPlayerState()->GetScore() < avgScore * 0.5)
+  {
+    tier1 += 0.35;
+    tier2 -= 0.10;
+    tier3 -= 0.25;
+  }
+
+  if(PlayerRef->GetPlayerState()->GetScore() > avgScore * 0.5)
+  {
+    tier1 -= 0.1;
+    tier2 -= 0.1;
+    tier3 += 0.2;
+  }
+
+  float RandomTierValue = FMath::FRand();
+
+  if(RandomTierValue < tier1)
+  {
+    //assign powerup between InfiniteInventory and Shield	
+    int32 RandomValue = FMath::RandRange(static_cast&ltint32&gt(EPowerUpType::InfiniteInventory),static_cast&ltint32&gt(EPowerUpType::Shield));
+    return static_cast&ltEPowerUpType&gt(RandomValue);
+  }
+
+  if(RandomTierValue < tier1 + tier2)
+  {
+    //assign SpeedBoost
+    return EPowerUpType::SpeedBoost;
+  }
+
+  else
+  {
+    //assign between Slippery and Gooey
+    int32 RandomValue = FMath::RandRange(static_cast&ltint32&gt(EPowerUpType::Slippery),static_cast&ltint32&gt(EPowerUpType::Gooey));
+    return static_cast&ltEPowerUpType&gt(RandomValue);
+  }
+  
+}
+</code></pre>
+
+
+<!--======================================================================Powerup Usage==================================================================================-->
+
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <!--======================================================================================================================================-->
@@ -504,6 +688,10 @@ void UEMGPlayerInventory::Multicast_AddToInventory_Implementation(FItemsInInvent
 
 <!---------------------------------------------------End of accordion--------------------------------------------------------->
     
+<div class="text-center my-5">
+  <a href="https://vfs-gdpg.itch.io/everything-must-go" class="btn btn-primary">Link to VFS Arcade</a>
+</div>
+
     </div> 
     </div>
     </section>
