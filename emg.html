@@ -642,6 +642,7 @@ EPowerUpType UEMGPowerup::GetRandomPowerup()
     tier3 += 0.2;
   }
 
+  //generate a random number from 0 to 1 and then compare with the tier values, having probability depending on how players were doing on the match
   float RandomTierValue = FMath::FRand();
 
   if(RandomTierValue < tier1)
@@ -663,12 +664,184 @@ EPowerUpType UEMGPowerup::GetRandomPowerup()
     int32 RandomValue = FMath::RandRange(static_cast&ltint32&gt(EPowerUpType::Slippery),static_cast&ltint32&gt(EPowerUpType::Gooey));
     return static_cast&ltEPowerUpType&gt(RandomValue);
   }
-  
 }
 </code></pre>
 
+<p>Once the selection of the power-up has been done, I implemented a RPC that allows the server assign the power-up that was assigned to the player and 
+  communicates it to them. 
+</p>
+
+<pre class="pre-scrollable"><code class="language-cpp">
+UFUNCTION(Server,Reliable,BlueprintCallable)
+void Server_AssignPlayerPowerup();
+UFUNCTION(NetMulticast,Reliable)
+void Multicast_AssignPlayerPowerup(EPowerUpType PowerupToAssign);
+</code></pre>
+
+<pre class="pre-scrollable"><code class="language-cpp">
+void UEMGPowerup::Server_AssignPlayerPowerup_Implementation()
+{
+  EPowerUpType AssignedPowerup = GetRandomPowerup();
+  Multicast_AssignPlayerPowerup(AssignedPowerup);
+}
+
+void UEMGPowerup::Multicast_AssignPlayerPowerup_Implementation(EPowerUpType PowerupToAssign)
+{
+  CurrentPowerup = PowerupToAssign;
+}
+</code></pre>
+
+<div class="my-5">
+  <div class="row text-center">
+    <div class="col-3"></div>
+    <img src="./Images/EMG/EMGPickupPowerupGIF.gif" class="img-fluid col-6">
+  </div>
+</div>
 
 <!--======================================================================Powerup Usage==================================================================================-->
+<h5 class="my-4">Using Power-ups</h5>
+<p>When a player has a power-up assigned, they can use the power-up input action, which will trigger whichever
+  power-up the player has currently assigned. In order to correctly execute the modifier that the player has assigned,
+  we engineered a data structure that holds all the possible power-ups available and the component has a variable that 
+  of said type that stores which is the current power-up that the player can make use of. If the player triggers a power-up and 
+  has one currently assigned, the <b>UsePowerup()</b> RPC method will be called, which will trigger the corresponding modifier depending on
+  the current power-up variable. For the power-ups that have a time duration, I decided to make use of a timer that will call
+  the <b>RevertPowerup()</b> RPC that, with a very similar logic, will check which is the current active power-up and revert it's 
+  effects once the specified time has finished. 
+</p>
+
+<h6 class="my-4">Use power-up server call</h6>
+<pre class="pre-scrollable"><code class="language-cpp">
+//Server call for using power-up
+UFUNCTION(Server, Reliable, BlueprintCallable)
+void Server_UsePowerup();
+</code></pre>
+
+<h6 class="my-4">Use power-up logic</h6>
+<pre class="pre-scrollable"><code class="language-cpp">
+void UEMGPowerup::Server_UsePowerup_Implementation()
+{
+  //Check which is the current assigned power-up
+  switch (CurrentPowerup)
+  {
+  
+  //Speed power-up call  
+  case EPowerUpType::SpeedBoost:
+    {
+      Server_SpeedPowerup();
+      GetWorld()->GetTimerManager().SetTimer(PowerupTimerHandle,this, &UEMGPowerup::Server_RevertPowerup,SpeedPowerupDuration,false);
+      OnPlaySpeedCue.Broadcast();
+      break;
+    }
+      
+  //Infinite inventory power-up call  
+  case EPowerUpType::InfiniteInventory:
+    {
+      InfiniteInventory();
+      //CurrentPowerupDuration = InventoryPowerupDuration;
+      GetWorld()->GetTimerManager().SetTimer(PowerupTimerHandle,this, &UEMGPowerup::Server_RevertPowerup,InventoryPowerupDuration,false);
+      OnPlayInfiniteCue.Broadcast();
+      break;
+    }
+
+  //Shield power-up call
+  case EPowerUpType::Shield:
+    {
+      Server_UseShieldPowerup();
+      GetWorld()->GetTimerManager().SetTimer(PowerupTimerHandle,this, &UEMGPowerup::Server_RevertPowerup,ShieldPowerupDuration,false);
+      OnPlayShieldCue.Broadcast();
+      break;
+    }
+
+  //Goo trap power-up call
+  case EPowerUpType::Gooey:
+    {
+      if(!GooeyHazardRef)
+      {
+        return;
+      }
+      if(!PowerupSpawn)
+      {
+        return;
+      }
+      
+      FVector spawningLocation = PowerupSpawn->GetComponentLocation();
+      AEMG_ObstacleHazard* GooeyHazard = GetWorld()->SpawnActor&ltAEMG_ObstacleHazard&gt(GooeyHazardRef,spawningLocation,
+        GetOwner()->GetActorRotation(),PowerupSpawnParams);
+
+      OnPlayGooeyCue.Broadcast();
+      Server_RevertPowerup();
+      break;
+    }
+
+  //Slippery trap power-up call
+  case EPowerUpType::Slippery:
+    {
+      if(!SlipperyHazardRef)
+      {
+        return;
+      }
+      if(!PowerupSpawn)
+      {
+        return;
+      }
+      
+      FVector spawningLocation = PowerupSpawn->GetComponentLocation();
+      AEMG_SlipperyHazzard* slipperyHazard = GetWorld()->SpawnActor&ltAEMG_SlipperyHazzard&gt(SlipperyHazardRef,spawningLocation,
+        GetOwner()->GetActorRotation(),PowerupSpawnParams);
+
+      OnPlaySlipperyCue.Broadcast();
+      Server_RevertPowerup();
+      break;
+    }
+    
+  }
+}
+</code></pre>
+
+<h6 class="my-4">Revert Powerup RPC Call</h6>
+<pre class="pre-scrollable"><code class="language-cpp">
+UFUNCTION(Server,Reliable,BlueprintCallable)
+void Server_RevertPowerup();
+UFUNCTION(NetMulticast,Reliable)
+void Multicast_RevertPowerup();  
+</code></pre>
+
+<h6 class="my-4">Revert power-up logic</h6>
+<pre class="pre-scrollable"><code class="language-cpp">
+void UEMGPowerup::Server_RevertPowerup_Implementation()
+{
+  Multicast_RevertPowerup();
+}
+
+void UEMGPowerup::Multicast_RevertPowerup_Implementation()
+{
+  
+  switch (CurrentPowerup)
+  {
+    case EPowerUpType::SpeedBoost:
+      RevertSpeedPowerup();
+      OnStopSpeedCue.Broadcast();
+      break;
+    
+    case EPowerUpType::InfiniteInventory:
+      RevertInfiniteInventory();
+      OnStopInfiniteCue.Broadcast();
+      break;
+
+    case EPowerUpType::Shield:
+      OnStopShieldCue.Broadcast();
+      break;
+    
+  }
+  
+  CurrentPowerup = EPowerUpType::None;
+  PlayerRef->ResetPowewrupWidget();
+  CurrentPowerupDuration = 0;
+} 
+</code></pre>
+
+
 
       </div>
     </div>
