@@ -930,7 +930,7 @@ void UEMGPowerup::RevertInfiniteInventory()
     <button class="accordion-button fw-bold collapsed" type="button" 
     data-bs-toggle="collapse" data-bs-target="#audio" 
     aria-expanded="true" aria-controls="audio"> <!-- TARGET = the id of the section that is going to toggle-->
-    Sound Implementation
+    Audio Programming
     </button>
   </h2>
   <!--Content of the accordion, declaring the id that we previously assigned-->
@@ -945,16 +945,30 @@ void UEMGPowerup::RevertInfiniteInventory()
 <h5 class="mb-1">The Idea</h5>
 
 <p>
-
-
+For the audio implementation, we wanted to have a very cartoony library of SFX that matched the silly vibe of a game show. We collaborated with 3 sound designers that delivered
+high quality assets and implemented the events using FMOD. My main task was to design the systems for the implementation of the events considering all the network implications
+that our game had. This meant differentiating between which audio events should be fully local, which should be replicated and which should run only on client. 
 </p>
 
 <!--===================================================Music Implementation==================================================================================-->
 
 <h5 class="my-4">Music</h5>
 <p>
-
+In order to place the music in the game, I created a separate actor with no mesh attached to it that holds an FMOD Event emitter. This blueprint has a very simple task: it will play the corresponding 
+music to the level we currently are (either main menu, win screen or main game), and stop and releases the music whenever the match has ended or the player has traveled to a different level. 
 </p>
+
+
+<div class="my-5">
+  <div class="row text-center">
+    <div class="col-3"></div>
+    <iframe src="https://blueprintue.com/render/a9q9wlz6/" scrolling="no" allowfullscreen class="col-6" zoom=-10 height="300px"></iframe>
+  </div>
+</div>
+
+<div class="my-5 col-12">
+  
+</div>
 
 <!--======================================================================Show Host and Audience=================================================================================-->
 <h5 class="my-4">Show Host & Audience</h5>
