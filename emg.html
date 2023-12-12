@@ -946,7 +946,9 @@ void UEMGPowerup::RevertInfiniteInventory()
 <p>
 For the audio implementation, we wanted to have a very cartoony library of SFX that matched the silly vibe of a game show. We collaborated with 3 sound designers that delivered
 high quality assets and implemented the events using FMOD. My main task was to design the systems for the implementation of the events considering all the network implications
-that our game had. This meant differentiating between which audio events should be fully local, which should be replicated and which should run only on client. 
+that our game had. This meant differentiating between which audio events should be fully local, which should be replicated and which should run only on client. Most of the audio implementation
+was done in blueprints, given that they offer very easy communication with FMOD events and components. Callbacks were also used mainly for very specific parts in code in which
+it was very clear that a sound cue should be played in that part of the execution of the code. 
 </p>
 
 <!--===================================================Music Implementation==================================================================================-->
@@ -999,15 +1001,243 @@ there must be a Remote Procedural Call in order to reproduce the cue for every c
   </div> 
 </div>
 
+<h6 class="mt-3">Play Collision Sound: RPC Example</h6>
+<p>This part of the show host blueprint is an example of an RPC that plays a cue for all clients. This cue is played when a player gets rammed by another player and 
+  looses more than 3 items. The idea for having this cue play for every client is to keep the game show vibe with the game being commented by the host. </p>
+<div>
+  <div class="row text-center">
+    <iframe src="https://blueprintue.com/render/za9z0rov/" scrolling="no" allowfullscreen class="col-12" zoom=-10 height="400px"></iframe>
+  </div> 
+</div>
+
 
 
 <!--======================================================================Player Cues=================================================================================-->
-<h5 class="my-4">Player Cues</h5>
+<h5 class="my-4">Power-up Cues</h5>
 <p>
-
+The power-up sound cues are a great example of audio implemented in blueprints through C++ callbacks. For this events, I implemented an actor component exclusively for player cues.
+This actor component assigned on begin play all the functions that played the sound cues for power-ups. This blueprint also took care of implementing the correct logic
+both for network and FMOD in order to ensure that each cue sounded only for the relevant player and to ensure that the FMOD logic that our sound designers intended was achieved. 
 </p>
 
+<div>
+  <div class="row text-center">
+    <iframe src="https://blueprintue.com/render/px9f4wfd/" scrolling="no" allowfullscreen class="col-12" zoom=-10 height="400px"></iframe>
+  </div> 
+</div>
 
+<h6 class="my-4">Audio Callbacks in Power-up Component</h6>
+<pre class="pre-scrollable"><code class="language-cpp">
+//Callbacks for activating audio cues
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlaySuperspeedCue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayShieldCue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayInfiniteInventoryCue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayGooeyCue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlaySlipperyCue);
+
+//Callbacks for deactivating audio cues
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStopSuperspeedCue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStopShieldCue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStopInfiniteInventoryCue); 
+
+//Callbacks for playing audio cues
+UPROPERTY(BlueprintAssignable)
+FOnPlaySuperspeedCue OnPlaySpeedCue;
+
+UPROPERTY(BlueprintAssignable)
+FOnPlayShieldCue OnPlayShieldCue;
+
+UPROPERTY(BlueprintAssignable)
+FOnPlayInfiniteInventoryCue OnPlayInfiniteCue;
+
+UPROPERTY(BlueprintAssignable)
+FOnPlayGooeyCue OnPlayGooeyCue;
+
+UPROPERTY(BlueprintAssignable)
+FOnPlaySlipperyCue OnPlaySlipperyCue;
+
+//Callbacks for stopping audio cues
+UPROPERTY(BlueprintAssignable)
+FOnStopShieldCue OnStopShieldCue;
+
+UPROPERTY(BlueprintAssignable)
+FOnStopSuperspeedCue OnStopSpeedCue;
+
+UPROPERTY(BlueprintAssignable)
+FOnStopInfiniteInventoryCue OnStopInfiniteCue;
+
+//Callback for collecting powerup
+UPROPERTY(BlueprintAssignable)
+FOnPlayCollectPowerupSoundCue OnCollectSoundCue;
+
+</code></pre>
+
+<h6 class="my-4">Power-up implementation with audio callbacks</h6>
+<pre class="pre-scrollable"><code class="language-cpp">
+void UEMGPowerup::Server_UsePowerup_Implementation()
+{
+	
+	switch (CurrentPowerup)
+	{
+		
+	case EPowerUpType::SpeedBoost:
+		{
+			Server_SpeedPowerup();
+			GetWorld()->GetTimerManager().SetTimer(PowerupTimerHandle,this, &UEMGPowerup::Server_RevertPowerup,SpeedPowerupDuration,false);
+			OnPlaySpeedCue.Broadcast();
+			break;
+		}
+			
+	case EPowerUpType::InfiniteInventory:
+		{
+			InfiniteInventory();
+			//CurrentPowerupDuration = InventoryPowerupDuration;
+			GetWorld()->GetTimerManager().SetTimer(PowerupTimerHandle,this, &UEMGPowerup::Server_RevertPowerup,InventoryPowerupDuration,false);
+			OnPlayInfiniteCue.Broadcast();
+			break;
+		}
+
+	case EPowerUpType::Shield:
+		{
+			Server_UseShieldPowerup();
+			GetWorld()->GetTimerManager().SetTimer(PowerupTimerHandle,this, &UEMGPowerup::Server_RevertPowerup,ShieldPowerupDuration,false);
+			OnPlayShieldCue.Broadcast();
+			break;
+		}
+
+
+	case EPowerUpType::Gooey:
+		{
+			if(!GooeyHazardRef)
+			{
+				return;
+			}
+			if(!PowerupSpawn)
+			{
+				return;
+			}
+			
+			FVector spawningLocation = PowerupSpawn->GetComponentLocation();
+			AEMG_ObstacleHazard* GooeyHazard = GetWorld()->SpawnActor<AEMG_ObstacleHazard>(GooeyHazardRef,spawningLocation,
+				GetOwner()->GetActorRotation(),PowerupSpawnParams);
+
+			OnPlayGooeyCue.Broadcast();
+			Server_RevertPowerup();
+			break;
+		}
+
+	case EPowerUpType::Slippery:
+		{
+			if(!SlipperyHazardRef)
+			{
+				return;
+			}
+			if(!PowerupSpawn)
+			{
+				return;
+			}
+			
+			FVector spawningLocation = PowerupSpawn->GetComponentLocation();
+			AEMG_SlipperyHazzard* slipperyHazard = GetWorld()->SpawnActor<AEMG_SlipperyHazzard>(SlipperyHazardRef,spawningLocation,
+				GetOwner()->GetActorRotation(),PowerupSpawnParams);
+
+			OnPlaySlipperyCue.Broadcast();
+			Server_RevertPowerup();
+			break;
+		}
+		
+	}
+}
+
+
+void UEMGPowerup::Server_RevertPowerup_Implementation()
+{
+	Multicast_RevertPowerup();
+}
+
+void UEMGPowerup::Multicast_RevertPowerup_Implementation()
+{
+	
+	switch (CurrentPowerup)
+	{
+		case EPowerUpType::SpeedBoost:
+			RevertSpeedPowerup();
+			OnStopSpeedCue.Broadcast();
+			break;
+		
+		case EPowerUpType::InfiniteInventory:
+			RevertInfiniteInventory();
+			OnStopInfiniteCue.Broadcast();
+			break;
+
+		case EPowerUpType::Shield:
+			OnStopShieldCue.Broadcast();
+			break;
+		
+	}
+	
+	CurrentPowerup = EPowerUpType::None;
+	PlayerRef->ResetPowewrupWidget();
+	CurrentPowerupDuration = 0;
+}
+
+EPowerUpType UEMGPowerup::GetRandomPowerup()
+{
+
+	//return EPowerUpType::Shield;
+	//Get score average in match
+	float avgScore = GetPlayerScoreAverage();
+
+	//tiers probability of powerup per tier (t1 is OP, tier3 is lame)
+	float tier1 = 0.25;
+	float tier2 = 0.35;
+	float tier3 = 0.40;
+
+	if(!PlayerRef)
+	{
+		return EPowerUpType::None;
+	}
+	
+	if(PlayerRef->GetPlayerState()->GetScore() < avgScore * 0.5)
+	{
+		tier1 += 0.35;
+		tier2 -= 0.10;
+		tier3 -= 0.25;
+	}
+
+	if(PlayerRef->GetPlayerState()->GetScore() > avgScore * 0.5)
+	{
+		tier1 -= 0.1;
+		tier2 -= 0.1;
+		tier3 += 0.2;
+	}
+
+	float RandomTierValue = FMath::FRand();
+
+	if(RandomTierValue < tier1)
+	{
+		//assign powerup between InfiniteInventory and Shield	
+		int32 RandomValue = FMath::RandRange(static_cast<int32>(EPowerUpType::InfiniteInventory),static_cast<int32>(EPowerUpType::Shield));
+		return static_cast<EPowerUpType>(RandomValue);
+	}
+
+	if(RandomTierValue < tier1 + tier2)
+	{
+		//assign SpeedBoost
+		return EPowerUpType::SpeedBoost;
+	}
+
+	else
+	{
+		//assign between Slippery and Gooey
+		int32 RandomValue = FMath::RandRange(static_cast<int32>(EPowerUpType::Slippery),static_cast<int32>(EPowerUpType::Gooey));
+		return static_cast<EPowerUpType>(RandomValue);
+	}
+	
+}
+
+
+</code></pre>
 
       </div>
     </div>
