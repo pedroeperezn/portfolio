@@ -955,25 +955,30 @@ that our game had. This meant differentiating between which audio events should 
 <h5 class="my-4">Music</h5>
 <p>
 In order to place the music in the game, I created a separate actor with no mesh attached to it that holds an FMOD Event emitter. This blueprint has a very simple task: it will play the corresponding 
-music to the level we currently are (either main menu, win screen or main game), and stop and releases the music whenever the match has ended or the player has traveled to a different level. 
+music to the level we currently are (either main menu, win screen or main game), and stop and releases the music whenever the match has ended or the player has traveled to a different level. (Press graph to see connections).
 </p>
 
-
-<div class="my-5">
+<h6 class="mt-3">Begin Play</h6>
+<div>
   <div class="row text-center">
-    <div class="col-3"></div>
-    <iframe src="https://blueprintue.com/render/a9q9wlz6/" scrolling="no" allowfullscreen class="col-6" zoom=-10 height="300px"></iframe>
-  </div>
+    <!--<div class="col-3"></div>-->
+    <iframe src="https://blueprintue.com/render/a9q9wlz6/" scrolling="no" allowfullscreen class="col-12" zoom=-10 height="400px"></iframe>
+  </div> 
 </div>
 
-<div class="my-5 col-12">
-  
+<h6 class="mt-3">Tick</h6>
+<div>
+  <div class="row text-center">
+    <iframe src="https://blueprintue.com/render/l3y1ogwy/" scrolling="no" allowfullscreen class="col-12" zoom=-10 height="400px"></iframe>
+  </div> 
 </div>
 
 <!--======================================================================Show Host and Audience=================================================================================-->
 <h5 class="my-4">Show Host & Audience</h5>
 <p>
-
+The show host and audience share a very similar logic with the music blueprint. The main difference lies with the fact that both the show host and the audience
+need to react to events that are happening on the game. This means that, whenever something happens in the game that should trigger tha show host or audience cue, 
+there must be a Remote Procedural Call in order to reproduce the cue for every client. 
 </p>
 
 <!--======================================================================Player Cues=================================================================================-->
