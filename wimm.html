@@ -8,6 +8,8 @@
   <title>Pedro E. Perez: Professional portfolio</title>
   <link rel="stylesheet" href="./css/main.min.css">
   <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./prism/prism.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <link rel="icon" href="./Images/game-controller.png" type="image/x-icon">
 </head>
   
@@ -20,6 +22,7 @@
         <div class="container-xxl">
 
           <a href="./index.html" class="navbar-brand">
+            <i class="bi bi-joystick"></i>
             <span class="fw-bold text-secondary">Pedro Enrique Perez</span>
           </a>
 
@@ -30,21 +33,6 @@
             <span class="navbar-toggler-icon"></span>
           </button>
 
-          <!--LINKS IN THE NAVBAR -->
-          <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
-            <ul class="navbar-nav">
-
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link"> Home </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"> Link2 </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"> Link3 </a>
-              </li>
-            </ul>
-          </div>
         
         </div>
       </nav>
@@ -65,19 +53,30 @@
       <div class="col-12 mt-5">
 
         <p class="lead my-4 text-light text-justify">"Where Is My Mind?" is a 3D top down puzzle game in which you play as Dr. Merriweather, 
-          an amnesiac man who wakes up in a neglected asylum and needs to find his way out by solving a series of musical puzzles.
+          an amnesiac man who wakes up in a neglected asylum and needs to find his way out by solving a series of musical puzzles with nothing 
+          but the help of a Kalimba.
         </p>
 
         <p class="lead my-4 text-light text-justify">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Autem odit harum possimus sed corrupti mollitia asperiores aut similique? 
-          Voluptatum pariatur provident quasi dolorum harum sed numquam asperiores, 
-          necessitatibus perferendis consectetur ipsum laborum saepe illo amet assumenda sit tenetur expedita optio facilis fugit. 
-          Quas numquam, veniam nihil aliquam corrupti unde, facere, ex ratione minus placeat rem ut eligendi rerum! Facilis, ab.
+          This project was developed over a time frame of 2 months using Unity 2022.2.14f1 and FMOD. For this game, I was responsible for 
+          all gameplay programming, audio implementation and sound design.  
         </p>
 
         <div class="embed-responsive embed-responsive-16by9 text-center mt-5">
           <iframe width="720px" height="480px" class="embed-responsive-item" src="https://www.youtube.com/embed/IA_WRKm6SF8?si=BM0TH4Dv-6kQIlGx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
+
+        <p class="lead my-5 text-light text-justify">
+          <b class="display-6">The Challenge:</b>
+          <div class="lead my-4 text-light">
+            The main challenge for Where Is My Mind lies in the fact that it is a puzzle game. Puzzle games normally imply
+            the implementation of several different mechanics and a very linear constraint on in which order puzzles should be solved in.
+            Also, for this game, we had the idea to implement a musical instrument that would help us to open doors and solve puzzles, which
+            implied not only designing and playing the musical cue for the instrument, but also the ability to enable and disable it, as well 
+            as keeping track on the notes that were played and to detect when the player played a correct tune that should unlock something
+            at that moment in the game. 
+          </div>
+        </p>
       </div>
 
     </div>
@@ -105,77 +104,321 @@
       
   <div class="list-group">
       <div class="list-group-item py-3">
-        <h5 class="mb-1">Kalimba</h5>
-        <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-          Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-          Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-          Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
 
-<p>Here is some sample code:</p>
-        
-<!--Sample code here for the mechanic-->
+        <h5 class="mb-1">The Idea</h5>
+        <p>
+          The Kalimba is a very important part of the concept of the game. The main idea is to be able to play an instrument in-game and use it to trigger different events or puzzles whenever playing the correct melody. 
+          This implies that we should keep track on which are the last played notes by the player storing them somewhere and also assigning each node a value that can be equivalent to a "password". 
+          The interactable objects can be narrowed down to doors (opening them) and the Husks, which are NPCs present in the game that move whenever the player plays the melody they are humming. 
+        </p>
 
-<pre class="pre-scrollable bg-light"><code>
-        
-using System;
-class GalacticAdventurer
+        <h5 class="mb-1">Using the Kalimba</h5>
+        <p>
+          In order to achieve that, I implemented a UI element that represented the kalimba, said UI element could be hidden or shown and, when shown, the control scheme would change (using the Input Action System) to impede movement and enable playing the instrument.
+          The Kalimba consists of 8 tiles (notes). Each tile has an assigned numerical value which will help us store the played melodies as passwords for unlocking puzzles. 
+          Every time the player plays a note, a sound cue will play corresponding to the note, 
+          and also a numerical value will be stored in a list of integers that keep track of all the notes that have been played. 
+          After storing the numbers, the list will be validated and pass only the last 4 notes that were played into a different array that has the purpose of being compared to all the game objects in the game that have a kalimba combination.
+        </p> 
+
+
+<pre class="pre-scrollable"><code class="language-csharp">
+public class KalimbaController : MonoBehaviour
 {
-  static void Main()
+
+    //Input Action References for tiles
+    [SerializeField] InputActionReference PlayTile1;
+    [SerializeField] InputActionReference PlayTile2;
+    [SerializeField] InputActionReference PlayTile3;
+    [SerializeField] InputActionReference PlayTile4;
+    [SerializeField] InputActionReference PlayTile5;
+    [SerializeField] InputActionReference PlayTile6;
+    [SerializeField] InputActionReference PlayTile7;
+    [SerializeField] InputActionReference PlayTile8;
+     
+    //List implementation: All the notes played by the player will be stored on a list, so it will not be checked only when you play
+    //4 notes, but will be always checking the last 4 notes you played
+    private List<int> KalimbaPlayedNotes = new List<int>();
+
+    //Check bools
+    private bool _disableKalimba;
+
+    //The combination has four notes, so for the combo check we just pass an array the last four notes that were played
+    public int[] ComboToCheck = new int[4];
+
+    //Managers (Singletons)
+    GameManager gameManager;
+    AudioManager audioManager;
+    FMODEvents fmod;
+
+    private void OnPlayTile1(InputAction.CallbackContext obj)
+    {
+        audioManager.PlayOneShot(fmod.KalimbaTile1,transform.position);
+        KalimbaComboCreator(1);
+        FlashKey(tile1Image);
+    }
+
+    //........................One OnPlay method for each tile...............................................
+
+    //Add notes to the KalimbaPlayedNotes list and validates them
+    private void KalimbaComboCreator(int tileNo)
+    {
+        KalimbaPlayedNotes.Add(tileNo);
+        ValidateCombo();
+    }
+    
+    //If the played notes are of the length of a combo, copy it to the ComboToCheck array
+    private void ValidateCombo()
+    {
+        //Assigns the last 4 digits of the list to the Combination to be checked (array of ints)
+        if (KalimbaPlayedNotes.Count >= 4)
+        {
+            KalimbaPlayedNotes.GetRange(KalimbaPlayedNotes.Count - 4, 4).CopyTo(ComboToCheck);
+        }
+
+        //Keeps the list at 4 elements (we dont need to store every note played)
+        if (KalimbaPlayedNotes.Count > 4)
+        {
+            KalimbaPlayedNotes.RemoveAt(0);
+        }
+
+    }
+
+    //Constantly check for combinations
+    private void FixedUpdate()
+    {
+        //We now are checking for the combination on every fixed update it it has already reached the desired number of notes
+        if (KalimbaPlayedNotes.Count >= 4)
+        {
+            try
+            {
+                //Iterates through the array of objects that have combinations according to the game manager
+                foreach (GameObject comboObject in gameManager.ObjectsWithCombo)
+                {
+                    //Checks for the combination on each of the elements stored
+                    if (comboObject.GetComponent<ComboCheck>().Check(ComboToCheck))
+                    {
+                      //Clears combination in the Kalimba after having it correct
+                        for (int i = 0; i < ComboToCheck.Length; i++)
+                        {
+                            ComboToCheck[i] = 0;
+                        }
+                    }
+                }
+            }
+
+            catch
+            {
+                Debug.Log("Missing comparable combo object");
+            }
+        }
+    }
+</code></pre>
+
+<h5 class="mb-1">Checking combination with interactable objects</h5>
+<p>For objects to have a combination assigned to them I created a "ComboCheck" component, to which designers can assign the 
+  combination in editor and it will be in charge of comparing if the combination was triggered and flag it as triggered when the player
+  plays the correct melody. 
+</p>
+
+<pre class="pre-scrollable"><code class="language-csharp">
+  using System.Collections;
+  using System.Collections.Generic;
+  using System.Linq;
+  using UnityEngine;
+  using UnityEngine.InputSystem;
+  
+  public class ComboCheck : MonoBehaviour
   {
-      Console.WriteLine("Welcome, Galactic Adventurer!");
-
-      // Generate a random space creature name
-      string spaceCreature = GenerateRandomSpaceCreature();
-      Console.WriteLine($"You are about to encounter a fearsome {spaceCreature}!");
-
-      // Simulate a space battle
-      Console.WriteLine("Initiating Space Battle...");
-
-      int playerHealth = 100;
-      int spaceCreatureHealth = new Random().Next(50, 101);
-
-      while (playerHealth > 0 && spaceCreatureHealth > 0)
+      //Assign correct combo for the object
+      [SerializeField]
+      public int[] correctCombo = new int[4];
+  
+      //Checks if combo has been triggered previously
+      public bool comboTriggered = false;
+      private bool canPlaySound = true;
+  
+      [SerializeField] public int[] playedCombo = new int[4];
+  
+  
+      private AudioManager audioManager;
+      private FMODEvents fmod;
+  
+      public bool Check(int[] KalimbaCombo)
       {
-          // Player attacks the space creature
-          int playerAttack = new Random().Next(10, 21);
-          spaceCreatureHealth -= playerAttack;
-          Console.WriteLine($"You attack the {spaceCreature} and deal {playerAttack} damage!");
-
-          // Space creature counterattacks
-          int creatureAttack = new Random().Next(5, 16);
-          playerHealth -= creatureAttack;
-          Console.WriteLine($"The {spaceCreature} counterattacks and deals {creatureAttack} damage!");
-
-          // Display health status
-          Console.WriteLine($"Your Health: {playerHealth} | {spaceCreature} Health: {spaceCreatureHealth}");
-          Console.WriteLine();
+          playedCombo = KalimbaCombo;
+  
+  
+          if (KalimbaCombo.SequenceEqual(correctCombo))
+          {
+              //Check which method is going to be called.
+              comboTriggered = true;
+              return comboTriggered;
+          }
+  
+          return comboTriggered;
       }
-
-      // Display the outcome of the space battle
-      if (playerHealth > 0)
+  
+      private void Start()
       {
-          Console.WriteLine($"Congratulations! You defeated the {spaceCreature}. You are a true Galactic Hero!");
+          audioManager = AudioManager.AMInstance;
+          fmod = FMODEvents.FMInstance;
       }
-      else
-      {
-          Console.WriteLine($"Oh no! The {spaceCreature} was too powerful. Better luck next time, Galactic Adventurer.");
-      }
-  }
+    }
+</code></pre>
 
-  static string GenerateRandomSpaceCreature()
-  {
-      string[] spaceCreatures = { "Zorgon", "Nebula Serpent", "Quasar Beast", "Galactic Kraken", "Stellar Phoenix" };
-      int randomIndex = new Random().Next(spaceCreatures.Length);
-      return spaceCreatures[randomIndex];
-  }
+<h5 class="mb-1">Moving Husks with Kalimba</h5>
+<p>
+  There are two husks on the game. Both of them follow a very similar behavior: they start immobile and, when they hear for the first time the melody
+  they are humming, they will now move to a different position (position A). If the husk is called again, it will move to position B. The husk will from now on 
+  always alternate between point A or point B whenever its melody is played on the Kalimba. For this behavior I created a component called "HuskCombinationCheck"
+  which will evaluate the "ComboCheck" component on the husk and, depending on the game objects that are set for the husk to move towards to, it will evaluate if the husk
+  should move, where should it move and trigger whichever event that should be happening because of overlapping with the destination.  
+</p>
+<pre class="pre-scrollable"><code class="language-csharp">
+
+public void HuskComboOk()
+{
+    //husk1 movement to point A
+    if (this.GetComponent&ltComboCheck&gt().comboTriggered && !huskHasMoved && CanMove)
+    {
+        //indicates that the husk has moved
+        PuzzleManager.Husk1HasMoved = true;
+        PuzzleManager.Husk1Sparkles.SetActive(false);
+        this.GetComponentInChildren&ltDisplayDialogueOnCollision&gt().DialogueScreen.SetActive(false);
+        //diable kalimba for player to see the action
+        if (!huskHasMoved)
+        {
+            gameManager.DisableKalimba();
+        }
+        //Dont display the melody anymore
+        this.GetComponentInChildren&ltDisplayDialogueOnCollision&gt().isShowable = false;
+        //get distance to lever and move
+        float distanceToLeaver = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(_leaver.transform.position.x, _leaver.transform.position.z));
+        float distanceToPPlate = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(_pressurePlate.transform.position.x, _pressurePlate.transform.position.z));
+        //move husk 
+        if (distanceToLeaver > 0.01 && !huskHasMoved)
+        {
+            Vector3 direction = new Vector3(_leaver.transform.position.x - transform.position.x, 0f,
+                                        _leaver.transform.position.z - transform.position.z).normalized;
+            HuskRigidBody.MovePosition(transform.position + direction * Time.deltaTime * movementSpeed);
+            Quaternion currentRotation = transform.rotation;
+            Quaternion targetRotation = Quaternion.LookRotation(direction); // converts a direction (Vector3) to a rotation (Quaternion)
+            Quaternion rotation = Quaternion.Slerp(currentRotation, targetRotation, 1f);
+            transform.rotation = rotation;
+            isInLeaver = true;
+        }
+    }
+    //husk 1 movement to point b
+    else if (this.GetComponent&ltComboCheck&gt().comboTriggered && huskHasMoved && isInLeaver && CanMove)
+    {
+        //check distance
+        float distanceToLeaver = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(_leaver.transform.position.x, _leaver.transform.position.z));
+        float distanceToPPlate = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(_pressurePlate.transform.position.x, _pressurePlate.transform.position.z));
+        //move to preassure plate (point B)
+        if (distanceToPPlate > 0.01)
+        {
+            Vector3 direction = new Vector3(_pressurePlate.transform.position.x - transform.position.x, 0f,
+                                        _pressurePlate.transform.position.z - transform.position.z).normalized;
+            HuskRigidBody.MovePosition(transform.position + direction * Time.deltaTime * movementSpeed);
+            Quaternion currentRotation = transform.rotation;
+            Quaternion targetRotation = Quaternion.LookRotation(direction); // converts a direction (Vector3) to a rotation (Quaternion)
+            Quaternion rotation = Quaternion.Slerp(currentRotation, targetRotation, 1f);
+            transform.rotation = rotation;
+        }
+    }
+    //husk2 behavior, this one doesn't return to the original position
+    else if (this.GetComponent&ltComboCheck&gt().comboTriggered && huskHasMoved && !isInLeaver && CanMove)
+    {
+        float distanceToLeaver = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(_leaver.transform.position.x, _leaver.transform.position.z));
+        float distanceToPPlate = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(_pressurePlate.transform.position.x, _pressurePlate.transform.position.z));
+        if (distanceToLeaver > 0.01)
+        {
+            Vector3 direction = new Vector3(_leaver.transform.position.x - transform.position.x, 0f,
+                                        _leaver.transform.position.z - transform.position.z).normalized;
+            HuskRigidBody.MovePosition(transform.position + direction*Time.deltaTime*movementSpeed);
+            Quaternion currentRotation = transform.rotation;
+            Quaternion targetRotation = Quaternion.LookRotation(direction); // converts a direction (Vector3) to a rotation (Quaternion)
+            Quaternion rotation = Quaternion.Slerp(currentRotation, targetRotation, 1f);
+            transform.rotation = rotation;
+        }
+    }
+}
+private void OnTriggerEnter(Collider other)
+{
+    //Point A
+    if (other.gameObject.tag == "Leaver")
+    {
+        huskHasMoved = true;
+        isInLeaver = true;
+        audioManager.PlayOneShot(fmod.barDoor,_barDoor.transform.position);
+        this.GetComponent&ltComboCheck&gt().comboTriggered = false;
+    }
+    
+    //Point B
+    else if (other.gameObject.tag == "Plate")
+    {
+        isInLeaver = false;
+        isInPressurePlate = true;
+        this.GetComponent&ltComboCheck&gt().comboTriggered = false;
+    }
 }
 
-</code></pre>
-<!--Closing the sample code for the mechanic-->
 
-<div class="text-center my-5">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
+</code></pre>
+<h5 class="mb-1">Opening doors with the Kalimba</h5>
+<p>
+For door opening, I implemented a component for each door that checks if the combination was triggered on Update. If the combination was triggered, then 
+the component will mark the puzzle as solved and will open the door with an animation trigger. 
+</p>
+<h6 class="my-1">Combination check</h6>
+<pre class="pre-scrollable"><code class="language-csharp">
+private void Update()
+{
+    if (PuzzleManager.PressurePlate1Solved && this.GetComponent<ComboCheck>().comboTriggered)
+    {
+        GetComponent<OpenDoor>().DoOpenDoor();
+        if (!_hasOpened)
+        {
+            PuzzleManager.KalimbaDoor1Solved = true;
+            PuzzleManager.KalimbaDoor1Sparkles.SetActive(false);
+            audioManager.PlayOneShot(fmod.normalDoor, transform.position);
+            _hasOpened = true;
+        }
+    }
+    else 
+    {
+        GetComponent<ComboCheck>().comboTriggered = false;
+    }
+}
+</code></pre>
+<h6 class="my-1">Open door script</h6>
+<pre class="pre-scrollable"><code class="language-csharp">
+public class OpenDoor : MonoBehaviour
+{
+
+    private Animator DoorAnimator;
+
+    public void DoOpenDoor()
+    {
+        DoorAnimator.SetTrigger("Open");
+    }
+
+
+    public void CloseDoor()
+    { 
+        DoorAnimator.SetTrigger("Close");
+    
+    }
+
+    private void Start()
+    {
+        DoorAnimator = GetComponent<Animator>();
+    }
+
+}
+</code></pre>
+
 
       </div>
     </div>
@@ -200,84 +443,184 @@ class GalacticAdventurer
       
       <div class="list-group">
           <div class="list-group-item py-3">
-            <h5 class="mb-1">Puzzle Manager</h5>
-            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
-              <p>Here is some sample code:</p>
+            <h5 class="mb-1">The idea</h5>
+            <p class="my-3">
+              The Puzzle Manager is one of the singleton classes I designed for keeping track of a specific task in the game. 
+              This specific manager has track of which puzzles and sections of the game have already been discovered. 
+              The main idea behind the puzzle manager was to ensure that the puzzles were solved in the correct order and prevent players from playing a melody that should unlock something forward in the game that they haven't reached yet. 
+              The puzzle manager also allowed me to implement debug hot keys which granted me earlier access to further sections in the game in order to test all puzzles without having to play the complete game each time. 
+            </p>
+              
           
 
 <!--Sample code here for the mechanic-->  
-  <pre class="pre-scrollable bg-light"><code>
-          
+<pre class="pre-scrollable"><code class="language-csharp">       
 using System;
-class CyberPetSimulator
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using FMODUnity;
+
+public class PuzzleManager : MonoBehaviour
 {
-    static void Main()
+    public static PuzzleManager PMInstance;
+
+    //GameObjects with puzzles 
+    [Header("Game Elements")]
+    [SerializeField] private GameObject kalimba;
+    [SerializeField] private GameObject checkers;
+    [SerializeField] private GameObject Door1;
+    [SerializeField] private GameObject CheckerTrigger;
+    [SerializeField] private GameObject Door2;
+
+
+    //Visual feedback for unsolved puzzles
+    [Header("Puzzle Sparkles")]
+    [SerializeField] public GameObject IcarusSparkles;
+    [SerializeField] public GameObject Husk1Sparkles;
+    [SerializeField] public GameObject BarDoor1Sparkles;
+    [SerializeField] public GameObject PPlate1_1Sparkles;
+    [SerializeField] public GameObject PPlate1_2Sparkles;
+    [SerializeField] public GameObject KalimbaDoor1Sparkles;
+    [SerializeField] public GameObject Leaver2Sparkles;
+    [SerializeField] public GameObject SecondHuskSparkles;
+    [SerializeField] public GameObject PPlate2_1Sparkles;
+    [SerializeField] public GameObject PPlate2_2Sparkles;
+    [SerializeField] public GameObject ChestSparkles;
+    [SerializeField] public GameObject CheckersSparkles;
+    [SerializeField] public GameObject FinalDoorSparkles;
+
+    [Header("Interactable Sparkles")]
+    [SerializeField] public GameObject CollectKalimbaSparkles;
+    [SerializeField] public GameObject FirstSheetSparkles;
+    [SerializeField] public GameObject CollectCheckersSparkles;
+
+    //Debug tools
+    [Header("Debug Controllers")]
+    [SerializeField] private InputActionReference _debugIcarus;
+    [SerializeField] private InputActionReference _openRoom1Door;
+    [SerializeField] private InputActionReference _restartScene;
+    [SerializeField] private InputActionReference _showChecker;
+    [SerializeField] private InputActionReference _solveChecker;
+    [SerializeField] private InputActionReference _openFinalDoor;
+
+    //Checks for solved puzzzles
+    public bool IcarusSolved = false;
+    public bool Husk1HasMoved = false;
+    public bool BarDoor1Opened = false;
+    public bool PressurePlate1Solved = false;
+    private bool isDoor1Open = false;
+    public bool KalimbaDoor1Solved = false;
+    public bool PressurePlate2Solved = false;
+
+    //checkerboard bool new reference
+    public bool CheckerboardSolved = false;
+    public bool finalDoorSolved = false;
+
+    //Managers
+    AudioManager audioManager;
+    FMODEvents fmod;
+    private bool kalimbaHasShown;
+
+    private void Start()
     {
-        Console.WriteLine("Welcome to the Cyber Pet Simulator!");
-
-        // Create a virtual cyber pet
-        CyberPet myPet = new CyberPet("ByteBot");
-
-        // Interact with the cyber pet
-        Console.WriteLine($"You adopted a cyber pet named {myPet.Name}!");
-        Console.WriteLine($"Initial happiness level: {myPet.Happiness}");
-
-        Console.WriteLine("Playing with your cyber pet...");
-        myPet.Play();
-        Console.WriteLine($"Happiness after playtime: {myPet.Happiness}");
-
-        Console.WriteLine("Feeding your cyber pet...");
-        myPet.Feed();
-        Console.WriteLine($"Happiness after feeding: {myPet.Happiness}");
-
-        Console.WriteLine("Taking your cyber pet to the virtual doctor...");
-        myPet.VisitDoctor();
-        Console.WriteLine($"Happiness after the virtual doctor visit: {myPet.Happiness}");
-
-        Console.WriteLine("Your cyber pet says goodbye!");
+        audioManager = AudioManager.AMInstance;
+        fmod = FMODEvents.FMInstance;
     }
+
+    private void Awake()
+    {
+        PMInstance = this;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Enable kalimba after icarus puzzle is solved
+        if (IcarusSolved)
+        {
+            kalimba.GetComponent&ltSphereCollider&gt().enabled = true;
+            IcarusSparkles.SetActive(false);
+            if (!kalimbaHasShown) 
+            {
+                CollectKalimbaSparkles.SetActive(true);
+                kalimbaHasShown = true;
+            }
+        }
+
+    }
+
+    //automatically solve icarus
+    private void OnDebugIcarus(InputAction.CallbackContext obj)
+    {
+        IcarusSolved = true;
+    }
+
+    //skip first room
+    private void OnOpenDoorOne(InputAction.CallbackContext obj)
+    {
+        if (!isDoor1Open)
+        {
+            Door1.GetComponent&ltAnimator&gt().SetTrigger("Open");
+            isDoor1Open = true;
+        }
+
+        else
+        {
+            Door1.GetComponent&ltAnimator&gt().SetTrigger("Close");
+            isDoor1Open = false;
+
+        }
+    }
+
+    private void OnRestartScene(InputAction.CallbackContext obj)
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    private void OnShowChecker(InputAction.CallbackContext obj)
+    {
+        
+        CheckerTrigger.gameObject.SetActive(!CheckerTrigger.activeSelf);
+    }
+    private void OnSolveChecker(InputAction.CallbackContext obj)
+    {
+        CheckerboardSolved = !CheckerboardSolved;
+    }
+
+    //open final door automatically
+    private void OnOpenFinalDoor(InputAction.CallbackContext obj)
+    {
+        Door2.GetComponent&ltAnimator&gt().SetTrigger("Open");
+    }
+
+    //enable input actions
+    private void OnEnable()
+    {
+        _debugIcarus.action.performed += OnDebugIcarus;
+        _openRoom1Door.action.performed += OnOpenDoorOne;
+        _restartScene.action.performed += OnRestartScene;
+        _showChecker.action.performed += OnShowChecker;
+        _solveChecker.action.performed += OnSolveChecker;
+        _openFinalDoor.action.performed += OnOpenFinalDoor;
+    }
+
+    //disable input actions
+    private void OnDisable()
+    {
+        _debugIcarus.action.performed -= OnDebugIcarus;
+        _openRoom1Door.action.performed -= OnOpenDoorOne;
+        _restartScene.action.performed -= OnRestartScene;
+        _showChecker.action.performed -= OnShowChecker;
+        _solveChecker.action.performed -= OnSolveChecker;
+        _openFinalDoor.action.performed -= OnOpenFinalDoor;
+
+    }
+
 }
-
-class CyberPet
-{
-    public string Name { get; }
-    public int Happiness { get; private set; }
-
-    public CyberPet(string name)
-    {
-        Name = name;
-        Happiness = 50; // Initial happiness level
-    }
-
-    public void Play()
-    {
-        Console.WriteLine($"Playing with {Name}...");
-        Happiness += 20;
-    }
-
-    public void Feed()
-    {
-        Console.WriteLine($"Feeding {Name}...");
-        Happiness += 10;
-    }
-
-    public void VisitDoctor()
-    {
-        Console.WriteLine($"Taking {Name} to the virtual doctor...");
-        Happiness -= 15;
-    }
-}
-    
 </code></pre>
 
-  <!--Closing the sample code for the mechanic-->
-  
-  <div class="text-center my-5">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-  </div>
+
 
       </div>
     </div>
@@ -292,7 +635,7 @@ class CyberPet
     <button class="accordion-button fw-bold collapsed" type="button" 
     data-bs-toggle="collapse" data-bs-target="#audio" 
     aria-expanded="true" aria-controls="audio"> <!-- TARGET = the id of the section that is going to toggle-->
-    Audio Programming
+    Audio Implementation
     </button>
   </h2>
   <!--Content of the accordion, declaring the id that we previously assigned-->
@@ -302,87 +645,186 @@ class CyberPet
       
       <div class="list-group">
           <div class="list-group-item py-3">
-            <h5 class="mb-1">Audio Programming</h5>
-            <p class="my-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Nesciunt ut tenetur repudiandae dolor ipsam iste consequatur voluptates, quod doloribus earum, illo itaque explicabo, fugit similique. 
-              Distinctio dolores architecto, veritatis laudantium dicta in tempora quia voluptas numquam reiciendis earum! 
-              Ab corporis sapiente libero, eos sunt alias ipsam dolorem dolore pariatur odit.</p>
-              <p>Here is some sample code:</p>
-          
+            <h5 class="mb-1">The Idea</h5>
+            <p class="my-3">
+              Audio was implemented with the help of FMOD. In order to simplify the audio calls and to have all event instances concentrated in the same component and just
+              calling that same component instead of creating different instances all throughout the game, I decided to create an audio manager and a class of FMOD events which
+              were implemented using a singleton pattern in order to just call the instance of those classes to play sound cues wherever I required them. All FMOD events were assigned
+              on editor and then used in code. 
+            </p>
 
-<!--Sample code here for the mechanic-->  
-  <pre class="pre-scrollable bg-light"><code>
-          
-using System;
-class EmojiArtGenerator
+<h6 class="my-1"> FMOD Events Singleton </h6>
+<pre class="pre-scrollable"><code class="language-csharp">
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using FMODUnity;
+
+public class FMODEvents : MonoBehaviour
 {
-    static void Main()
+    //FMOD events for kalimba notes
+    [Header("Kalimba Notes")]
+    [SerializeField] public EventReference KalimbaTile1;
+    [SerializeField] public EventReference KalimbaTile2;
+    [SerializeField] public EventReference KalimbaTile3;
+    [SerializeField] public EventReference KalimbaTile4;
+    [SerializeField] public EventReference KalimbaTile5;
+    [SerializeField] public EventReference KalimbaTile6;
+    [SerializeField] public EventReference KalimbaTile7;
+    [SerializeField] public EventReference KalimbaTile8;
+
+    //footsteps
+    [Header("Player")]
+    [SerializeField] public EventReference NewFootsteps;
+
+    //game music
+    [Header("Music")]
+    [SerializeField] public EventReference music;
+
+    //husk melodies events
+    [Header("Husk Melodies")]
+    [SerializeField] public EventReference HuskMelody1;
+    [SerializeField] public EventReference HuskMelody2;
+
+    //icarus puzzle sounds
+    [Header("Icarus Puzzle")]
+    [SerializeField] public EventReference IcarusDragImage;
+    [SerializeField] public EventReference IcarusDropImage;
+
+    //checker puzzle sounds
+    [Header("Checker Puzzle")]
+    [SerializeField] public EventReference CheckerDragImage;
+    [SerializeField] public EventReference CheckerDropImage;
+
+    //doors sounds
+    [Header("Doors")]
+    [SerializeField] public EventReference cabinetDoor;
+    [SerializeField] public EventReference normalDoor;
+    [SerializeField] public EventReference barDoor;
+
+    //prop sounds
+    [Header("Props")]
+    [SerializeField] public EventReference PressurePlate;
+    [SerializeField] public EventReference Bookshelf;
+    [SerializeField] public EventReference Chest;
+    [SerializeField] public EventReference Drawer;
+    [SerializeField] public EventReference Phone;
+
+
+    //feedback sounds
+    [Header("Player Feedback")]
+    [SerializeField] public EventReference CorrectAnswer;
+    [SerializeField] public EventReference Interact;
+
+
+
+    public static FMODEvents FMInstance;
+
+    private void Awake()
     {
-        Console.WriteLine("Welcome to the Emoji Art Generator!");
-
-        Console.WriteLine("Enter the size of your emoji canvas (rows x columns):");
-        Console.Write("Rows: ");
-        int rows = int.Parse(Console.ReadLine());
-
-        Console.Write("Columns: ");
-        int columns = int.Parse(Console.ReadLine());
-
-        Console.WriteLine("Generating Emoji Art...");
-
-        string[,] emojiCanvas = GenerateEmojiArt(rows, columns);
-
-        // Display the generated emoji art
-        DisplayEmojiArt(emojiCanvas);
-
-        Console.WriteLine("Emoji Art Complete! Share your masterpiece with the world!");
-    }
-
-    static string[,] GenerateEmojiArt(int rows, int columns)
-    {
-        string[,] emojiCanvas = new string[rows, columns];
-
-        // Fill the canvas with random emojis
-        Random random = new Random();
-        string[] emojis = { "😀", "🌟", "🚀", "💡", "🎨", "❤️", "🍕", "🎉", "🌈", "👾" };
-
-        for (int i = 0; i < rows; i++)
+        if (FMInstance == null)
         {
-            for (int j = 0; j < columns; j++)
-            {
-                int randomIndex = random.Next(emojis.Length);
-                emojiCanvas[i, j] = emojis[randomIndex];
-            }
-        }
-
-        return emojiCanvas;
-    }
-
-    static void DisplayEmojiArt(string[,] emojiCanvas)
-    {
-        Console.WriteLine("Your Emoji Art:");
-
-        int rows = emojiCanvas.GetLength(0);
-        int columns = emojiCanvas.GetLength(1);
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                Console.Write(emojiCanvas[i, j] + " ");
-            }
-            Console.WriteLine();
+            FMInstance = this;
         }
     }
 }
+</code></pre>
+<h6 class="my-1"> Audio Manager Singleton </h6>   
+<pre class="pre-scrollable"><code class="language-csharp">
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
+using UIComponents;
 
+public class AudioManager : MonoBehaviour
+{
+    public static AudioManager AMInstance;
+    private EventInstance musicInstance;
 
-  </code></pre>
+    //list of events and emmiters
+    private List<EventInstance> eventInstances;
+    private List<StudioEventEmitter> eventEmiters;
 
-  <!--Closing the sample code for the mechanic-->
-  
-  <div class="text-center my-5">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/D-UmfqFjpl0?si=Iu5HeIT2xuz2j3Je" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-  </div>
+    //FMODEvnents class
+    private FMODEvents fmod;
+
+    private void Awake()
+    {
+        if (AMInstance == null) 
+        {
+            AMInstance = this;
+        }
+
+        eventInstances = new List<EventInstance>();
+        eventEmiters = new List<StudioEventEmitter>();
+    }
+
+    private void Start()
+    {
+        fmod = FMODEvents.FMInstance;
+        InitMusic(fmod.music);
+    }
+
+    //define play one shot function for easier playing
+    public void PlayOneShot(EventReference sound, Vector3 worldPos)
+    { 
+        RuntimeManager.PlayOneShot(sound, worldPos);
+    }
+
+    //create FMOD event instance and add it to my list
+    public EventInstance CreateEventInstance(EventReference reference)
+    { 
+        EventInstance eventInstance = RuntimeManager.CreateInstance(reference);
+        eventInstances.Add(eventInstance);
+        return eventInstance;
+    }
+
+    //create a FMOD emmiter and add it to my list
+    public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterGameObject) 
+    { 
+        StudioEventEmitter emitter = emitterGameObject.GetComponent<StudioEventEmitter>();
+        emitter.EventReference = eventReference;
+        eventEmiters.Add(emitter);
+        return emitter;
+    }
+
+    //start playing music
+    public void InitMusic(EventReference musicReference)
+    {
+        musicInstance = CreateEventInstance(musicReference);
+        musicInstance.start();
+    }
+
+    //Whenever I change from area in the game, the music changes
+    public void SetMusicArea(MusicPlayer area)
+    { 
+        musicInstance.setParameterByName("MusicArea", (float) area);
+    }
+
+    //release all used FMOD events
+    private void Cleanup() 
+    {
+        foreach(EventInstance eventInstance in eventInstances) 
+        {
+            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            eventInstance.release();
+        }
+
+        foreach(StudioEventEmitter emitter in eventEmiters) 
+        {
+            emitter.Stop();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Cleanup();
+    }
+}
+</code></pre>
+
 
       </div>
     </div>
@@ -408,5 +850,6 @@ class EmojiArtGenerator
 <!--=========================================================================================================================-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="./scripts/index.js"></script>
+<script src="./prism/prism.js"></script>
 </body>
 </html>
